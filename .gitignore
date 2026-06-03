@@ -2,3 +2,5 @@ dataset/images/*
 dataset/masks/*
 
 *.pth
+
+*.py[co]

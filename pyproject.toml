@@ -6,4 +6,5 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "kagglehub>=1.0.1",
+    "monai>=1.5.2",
 ]
