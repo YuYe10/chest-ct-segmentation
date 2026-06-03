@@ -1,13 +1,16 @@
-import glob
 import os
+import random
 
+import numpy as np
+import pandas as pd
 import torch
 from monai.data.dataset import Dataset
 from monai.transforms.compose import Compose
 from monai.transforms.intensity.dictionary import ScaleIntensityd
 from monai.transforms.io.dictionary import LoadImaged
-from monai.transforms.spatial.dictionary import Resized
+from monai.transforms.spatial.dictionary import RandFlipd, Resized
 from monai.transforms.utility.dictionary import EnsureChannelFirstd, ToTensord
+from sklearn.model_selection import train_test_split
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 
@@ -18,6 +21,11 @@ def main():
     # ==========================================
     # 1. 基础配置
     # ==========================================
+    random.seed(520)
+    np.random.seed(520)
+    torch.manual_seed(520)
+    torch.cuda.manual_seed(520)
+
     device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
     print(f"当前使用的设备: {device}")
 
@@ -26,19 +34,27 @@ def main():
     images_dir = os.path.join(data_dir, "images", "images")
     masks_dir = os.path.join(data_dir, "masks", "masks")
 
-    # 获取所有图片和掩码的路径 (假设格式为 png 或 tif)
-    # 请根据实际文件后缀修改 "*.png"
-    image_files = sorted(glob.glob(os.path.join(images_dir, "*.*")))
-    mask_files = sorted(glob.glob(os.path.join(masks_dir, "*.*")))
+    # === 按 exmaple.py 标准：通过 CSV 读取配对关系 ===
+    df = pd.read_csv(os.path.join(data_dir, "train.csv"))
+    print(f"CSV 共 {len(df)} 对图像-掩码")
 
-    # 构建 MONAI 需要的字典格式
-    data_dicts = [
-        {"image": img, "label": mask} for img, mask in zip(image_files, mask_files)
-    ]
+    train_df, val_df = train_test_split(df, test_size=0.2, random_state=520)
+    train_df = train_df.reset_index(drop=True)
+    val_df = val_df.reset_index(drop=True)
+    print(f"训练集: {len(train_df)} | 验证集: {len(val_df)}")
 
-    # 划分训练集和验证集 (简单 8:2 划分)
-    split_idx = int(len(data_dicts) * 0.8)
-    train_files, val_files = data_dicts[:split_idx], data_dicts[split_idx:]
+    # 构建 MONAI 需要的字典格式（拼接完整路径）
+    def build_data_dicts(df: pd.DataFrame):
+        return [
+            {
+                "image": os.path.join(images_dir, row["ImageId"]),
+                "label": os.path.join(masks_dir, row["MaskId"]),
+            }
+            for _, row in df.iterrows()
+        ]
+
+    train_files = build_data_dicts(train_df)
+    val_files = build_data_dicts(val_df)
 
     # ==========================================
     # 2. 数据增强与预处理 (Transforms)
@@ -48,6 +64,8 @@ def main():
         [
             LoadImaged(keys=["image", "label"]),
             EnsureChannelFirstd(keys=["image", "label"]),
+            RandFlipd(keys=["image", "label"], prob=0.5, spatial_axis=0),
+            RandFlipd(keys=["image", "label"], prob=0.5, spatial_axis=1),
             ScaleIntensityd(keys=["image"]),  # 归一化 CT 图像
             Resized(
                 keys=["image", "label"],
@@ -83,7 +101,7 @@ def main():
     # ==========================================
     # 6. 开始训练
     # ==========================================
-    max_epochs = 10
+    max_epochs = 200
     for epoch in range(max_epochs):
         model.train()
         epoch_loss = 0
@@ -93,7 +111,10 @@ def main():
         for batch_data in progress_bar:
             step += 1
             inputs = batch_data["image"].to(device)
-            labels = (batch_data["label"] > 127).float().to(device)
+            labels = (batch_data["label"] >= 240).float().to(device)
+            labels = labels[
+                :, [2, 1, 0], :, :
+            ]  # 添加通道顺序修正（PIL RGB → OpenCV BGR），将通道0和2互换
 
             optimizer.zero_grad()
             outputs = model(inputs)
