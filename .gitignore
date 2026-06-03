@@ -1,0 +1,4 @@
+dataset/images/*
+dataset/masks/*
+
+*.pth
