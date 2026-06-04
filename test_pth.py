@@ -1,6 +1,7 @@
 import glob
 import os
 
+import pandas as pd
 import torch
 from monai.data.dataset import Dataset
 from monai.transforms.compose import Compose
@@ -8,6 +9,7 @@ from monai.transforms.intensity.dictionary import ScaleIntensityd
 from monai.transforms.io.dictionary import LoadImaged
 from monai.transforms.spatial.dictionary import Resized
 from monai.transforms.utility.dictionary import EnsureChannelFirstd, ToTensord
+from sklearn.model_selection import train_test_split
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 
@@ -41,8 +43,25 @@ def main():
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     print(f"🚀 开始测试流程，使用设备: {device}")
 
-    # 权重文件路径 (请修改为你实际保存的最高分模型名称)
-    weight_path = "swin_unetr_epoch_10.pth"
+    # 权重文件路径 (支持用户交互选择)
+    pth_files = sorted(glob.glob("*.pth"))
+    if not pth_files:
+        raise FileNotFoundError("当前目录下没有找到 .pth 模型文件")
+    print("可用的模型文件:")
+    for i, f in enumerate(pth_files):
+        size = os.path.getsize(f) / 1024 / 1024
+        print(f"  [{i}] {f} ({size:.1f} MB)")
+    while True:
+        try:
+            choice = int(input("\n请输入编号选择模型文件: "))
+            if 0 <= choice < len(pth_files):
+                weight_path = pth_files[choice]
+                break
+            else:
+                print(f"编号超出范围，请输入 0 ~ {len(pth_files)-1}")
+        except ValueError:
+            print("请输入有效数字")
+    print(f"已选择: {weight_path}")
     if not os.path.exists(weight_path):
         raise FileNotFoundError(f"找不到权重文件: {weight_path}")
 
@@ -53,15 +72,17 @@ def main():
     images_dir = os.path.join(data_dir, "images", "images")
     masks_dir = os.path.join(data_dir, "masks", "masks")
 
-    image_files = sorted(glob.glob(os.path.join(images_dir, "*.*")))
-    mask_files = sorted(glob.glob(os.path.join(masks_dir, "*.*")))
-    data_dicts = [
-        {"image": img, "label": mask} for img, mask in zip(image_files, mask_files)
-    ]
+    df = pd.read_csv(os.path.join(data_dir, "train.csv"))
+    _, test_df = train_test_split(df, test_size=0.2, random_state=520)
+    test_df = test_df.reset_index(drop=True)
 
-    # 按照与训练集完全相同的比例 (8:2) 截取验证/测试集
-    split_idx = int(len(data_dicts) * 0.8)
-    test_files = data_dicts[split_idx:]
+    test_files = [
+        {
+            "image": os.path.join(images_dir, row["ImageId"]),
+            "label": os.path.join(masks_dir, row["MaskId"]),
+        }
+        for _, row in test_df.iterrows()
+    ]
     print(f"📦 载入测试集图片数量: {len(test_files)} 张")
 
     test_transforms = Compose(
@@ -109,7 +130,8 @@ def main():
         for batch_data in progress_bar:
             inputs = batch_data["image"].to(device)
             # 将标签二值化，确保其值为 0 或 1，防止掩码有 255 的灰度值
-            labels = (batch_data["label"].to(device) > 0).float()
+            labels = (batch_data["label"].to(device) >= 240).float()
+            labels = labels[:, [2, 1, 0], :, :]
 
             # 模型前向传播
             logits = model(inputs)
