@@ -14,7 +14,7 @@ from sklearn.model_selection import train_test_split
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 
-from model import get_model
+from model import get_unet as get_model
 
 
 def compute_metrics(preds, targets, smooth=1e-5):
@@ -76,7 +76,7 @@ def main():
 
     class_names = ["Lung", "Heart", "Trachea"]
 
-    pth_files = sorted(glob.glob("swin_unetr_epoch_*.pth"), key=extract_epoch)
+    pth_files = sorted(glob.glob("*epoch_*.pth"), key=extract_epoch)
     print(f"找到 {len(pth_files)} 个模型文件")
 
     results = []

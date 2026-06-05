@@ -13,8 +13,9 @@ from sklearn.model_selection import train_test_split
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 
-from model import get_lossfunc, get_model, get_optimizer
+from model import get_lossfunc, get_unet, get_optimizer
 
+get_model = get_unet
 
 def compute_metrics(preds, targets, smooth=1e-5):
     """
