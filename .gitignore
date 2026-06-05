@@ -4,3 +4,15 @@ dataset/masks/*
 *.pth
 
 *.py[co]
+
+# Ignore the LaTeX compile intermediate files
+*.aux
+*.log
+*.out
+*.toc
+*.vrb
+*.nav
+*.snm
+*.idx
+*.ilg
+*.ind
