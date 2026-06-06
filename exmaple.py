@@ -5,6 +5,9 @@ import time
 import warnings
 
 import cv2
+import matplotlib
+
+matplotlib.use("Agg")
 import matplotlib.colors as mpl_colors
 import matplotlib.pyplot as plt
 import numpy as np
@@ -13,9 +16,9 @@ import seaborn as sns
 import torch
 import torch.nn as nn
 from albumentations import Compose, HorizontalFlip, Normalize, VerticalFlip
-from albumentations.pytorch import ToTensor, ToTensorV2
+from albumentations.pytorch import ToTensorV2
 from IPython.display import HTML, clear_output
-from segmentation_models_pytorch.unet import Unet
+from segmentation_models_pytorch import Unet
 from sklearn.model_selection import train_test_split
 from torch.optim import Adam
 from torch.optim.lr_scheduler import ReduceLROnPlateau
@@ -376,14 +379,14 @@ def get_color_info(classes: list = ["lung", "heart", "trachea"]):
 class GlobalConfig:
     def __init__(self):
         self.seed = 555
-        self.path_to_csv = "./train.csv"
-        self.path_to_imgs_dir = "./images/images"
-        self.path_to_masks_dir = "./masks/masks"
+        self.path_to_csv = "./dataset/train.csv"
+        self.path_to_imgs_dir = "./dataset/images/images"
+        self.path_to_masks_dir = "./dataset/masks/masks"
         self.pretrained_model_path = (
-            "./pretrained_model/pretrained_model/model_100_epoch.pth"
+            "./dataset/pretrained_model/pretrained_model/model_100_epoch.pth"
         )
         self.train_logs_path = (
-            "./pretrained_model/pretrained_model/train_log_100_epoch.csv"
+            "./dataset/pretrained_model/pretrained_model/train_log_100_epoch.csv"
         )
 
 
@@ -654,9 +657,7 @@ class Trainer:
         self.net = self.net.to(self.device)
         self.criterion = criterion
         self.optimizer = Adam(self.net.parameters(), lr=lr)
-        self.scheduler = ReduceLROnPlateau(
-            self.optimizer, mode="min", patience=3, verbose=True
-        )
+        self.scheduler = ReduceLROnPlateau(self.optimizer, mode="min", patience=3)
         self.accumulation_steps = accumulation_steps // batch_size
         self.phases = ["train", "val"]
         self.num_epochs = num_epochs
@@ -747,8 +748,8 @@ class Trainer:
             """,
         ]
 
-        clear_output(True)
-        with plt.style.context("seaborn-dark-palette"):
+        plt.close("all")
+        with plt.style.context("seaborn-v0_8-dark-palette"):
             fig, axes = plt.subplots(3, 1, figsize=(8, 10))
             for i, ax in enumerate(axes):
                 ax.plot(data[i]["val"], c=colors[0], label="val")
@@ -757,7 +758,8 @@ class Trainer:
                 ax.legend(loc="upper right")
 
             plt.tight_layout()
-            plt.show()
+            plt.savefig("train_history.png", bbox_inches="tight", dpi=100)
+            plt.close()
 
     def load_predtrain_model(self, state_path: str):
         self.net.load_state_dict(torch.load(state_path))
