@@ -75,7 +75,7 @@
       \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{booktitle}{International Conference on Medical Image Computing and Computer-Assisted Intervention (MICCAI)}
+      \field{booktitle}{Int.\ Conf.\ Medical Image Computing and Computer-Assisted Intervention (MICCAI)}
       \field{title}{{Swin UNETR}: Swin Transformers for Semantic Segmentation of Brain Tumors in {MRI} Images}
       \field{year}{2022}
       \field{pages}{272\bibrangedash 282}
@@ -112,51 +112,51 @@
       \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{booktitle}{International Conference on Medical Image Computing and Computer-Assisted Intervention (MICCAI)}
+      \field{booktitle}{Int.\ Conf.\ Medical Image Computing and Computer-Assisted Intervention (MICCAI)}
       \field{title}{{U-Net}: Convolutional Networks for Biomedical Image Segmentation}
       \field{year}{2015}
       \field{pages}{234\bibrangedash 241}
       \range{pages}{8}
     \endentry
-    \entry{isensee2021nnunet}{inproceedings}{}
+    \entry{isensee2021nnunet}{article}{}
       \name{author}{5}{}{%
-        {{hash=fd2491b31394637fa717b80729281018}{%
+        {{hash=2b88eaafb2fd60c753f6a242479cb345}{%
            family={Isensee},
            familyi={I\bibinitperiod},
-           given={Fabian},
+           given={F.},
            giveni={F\bibinitperiod}}}%
-        {{hash=63350393ee74dce2bfeda809cbb2f459}{%
+        {{hash=62dbc7999d2cff79a6e732ae9cb25adf}{%
            family={Jaeger},
            familyi={J\bibinitperiod},
-           given={Paul\bibnamedelima F},
+           given={P.\bibnamedelimi F.},
            giveni={P\bibinitperiod\bibinitdelim F\bibinitperiod}}}%
-        {{hash=c8db325f01e156e511c9a87a5e890d22}{%
+        {{hash=a60734f4edaf124c2ed8eb71462049e9}{%
            family={Kohl},
            familyi={K\bibinitperiod},
-           given={Simon\bibnamedelima AA},
-           giveni={S\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
-        {{hash=819f9996aeeb7b20b1a97e1d23488871}{%
+           given={S.\bibnamedelimi A.\bibnamedelimi A.},
+           giveni={S\bibinitperiod\bibinitdelim A\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+        {{hash=42790f1a6b69337d3c707565e1b20698}{%
            family={Petersen},
            familyi={P\bibinitperiod},
-           given={Jens},
+           given={J.},
            giveni={J\bibinitperiod}}}%
-        {{hash=f673cd141cf85e311274bfdcd9fd11f6}{%
+        {{hash=91d411b9ad43475d9e72b201b48eebd5}{%
            family={Maier-Hein},
            familyi={M\bibinithyphendelim H\bibinitperiod},
-           given={Klaus\bibnamedelima H},
+           given={K.\bibnamedelimi H.},
            giveni={K\bibinitperiod\bibinitdelim H\bibinitperiod}}}%
       }
-      \strng{namehash}{20e869ebd96394d35261b15608d9b281}
-      \strng{fullhash}{690e21c850de111b35f42dadf0160683}
-      \strng{bibnamehash}{20e869ebd96394d35261b15608d9b281}
-      \strng{authorbibnamehash}{20e869ebd96394d35261b15608d9b281}
-      \strng{authornamehash}{20e869ebd96394d35261b15608d9b281}
-      \strng{authorfullhash}{690e21c850de111b35f42dadf0160683}
+      \strng{namehash}{2e6f869358c8fd748cef65fc9b84e258}
+      \strng{fullhash}{9cd22ba29856c058e0dab3885abfc8af}
+      \strng{bibnamehash}{2e6f869358c8fd748cef65fc9b84e258}
+      \strng{authorbibnamehash}{2e6f869358c8fd748cef65fc9b84e258}
+      \strng{authornamehash}{2e6f869358c8fd748cef65fc9b84e258}
+      \strng{authorfullhash}{9cd22ba29856c058e0dab3885abfc8af}
       \field{sortinit}{3}
       \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{booktitle}{Nature Methods}
+      \field{journaltitle}{Nature Methods}
       \field{number}{2}
       \field{title}{{nnU-Net}: a self-configuring method for deep learning-based biomedical image segmentation}
       \field{volume}{18}
@@ -166,58 +166,58 @@
     \endentry
     \entry{chen2021transunet}{article}{}
       \name{author}{9}{}{%
-        {{hash=09f91571373341723fe99201f5fe0923}{%
+        {{hash=38241eaee18102cab15a125b0654c7da}{%
            family={Chen},
            familyi={C\bibinitperiod},
-           given={Jieneng},
+           given={J.},
            giveni={J\bibinitperiod}}}%
-        {{hash=ef5ff599b344efe1e88f64ef083047cd}{%
+        {{hash=a1d6a8772a89bf1aded588e464a1eba5}{%
            family={Lu},
            familyi={L\bibinitperiod},
-           given={Yongyi},
+           given={Y.},
            giveni={Y\bibinitperiod}}}%
-        {{hash=efaf6458176dd432ecb6f9e814d1af43}{%
+        {{hash=8e5b4fa8a6cded2e238a8680d133a1e1}{%
            family={Yu},
            familyi={Y\bibinitperiod},
-           given={Qihang},
+           given={Q.},
            giveni={Q\bibinitperiod}}}%
-        {{hash=0f6bea11e63143b3ee938260496fa2fd}{%
+        {{hash=52e3dca013dbdc25b949dac9fa7280d3}{%
            family={Luo},
            familyi={L\bibinitperiod},
-           given={Xiangde},
+           given={X.},
            giveni={X\bibinitperiod}}}%
-        {{hash=91a5d92d019d0302b9a66aa6ba4b1bc8}{%
+        {{hash=fa3832d7f90cbf278ef78d6356df2671}{%
            family={Adeli},
            familyi={A\bibinitperiod},
-           given={Ehsan},
+           given={E.},
            giveni={E\bibinitperiod}}}%
-        {{hash=5c786d9afb3cf178271120f1fd926d21}{%
+        {{hash=61ad10c626e1d641e0b1d7b5f48d3233}{%
            family={Wang},
            familyi={W\bibinitperiod},
-           given={Yan},
+           given={Y.},
            giveni={Y\bibinitperiod}}}%
-        {{hash=c88c438fdf38473dd68166ad17a42018}{%
+        {{hash=299b9a25f5bd97c358ecf21f51232bb7}{%
            family={Lu},
            familyi={L\bibinitperiod},
-           given={Le},
+           given={L.},
            giveni={L\bibinitperiod}}}%
-        {{hash=7e4cdd805dbfc99ccee4571698195692}{%
+        {{hash=3d2e3625bb3e88bcbaedb1c4d857f35f}{%
            family={Yuille},
            familyi={Y\bibinitperiod},
-           given={Alan\bibnamedelima L},
+           given={A.\bibnamedelimi L.},
            giveni={A\bibinitperiod\bibinitdelim L\bibinitperiod}}}%
-        {{hash=a148a3c0a883fe5b1f247769b33e63c5}{%
+        {{hash=288f1cb2dd384cb5e91127507559fdbc}{%
            family={Zhou},
            familyi={Z\bibinitperiod},
-           given={Yuyin},
+           given={Y.},
            giveni={Y\bibinitperiod}}}%
       }
-      \strng{namehash}{1416eea6f3087bf3e6e413d226f75dff}
-      \strng{fullhash}{eeb9a7d34a2205a10358b8b516548409}
-      \strng{bibnamehash}{1416eea6f3087bf3e6e413d226f75dff}
-      \strng{authorbibnamehash}{1416eea6f3087bf3e6e413d226f75dff}
-      \strng{authornamehash}{1416eea6f3087bf3e6e413d226f75dff}
-      \strng{authorfullhash}{eeb9a7d34a2205a10358b8b516548409}
+      \strng{namehash}{009ae0939de2e2902cbc6c9fa114de64}
+      \strng{fullhash}{81014322e3d945cf81cc44cea4ca8243}
+      \strng{bibnamehash}{009ae0939de2e2902cbc6c9fa114de64}
+      \strng{authorbibnamehash}{009ae0939de2e2902cbc6c9fa114de64}
+      \strng{authornamehash}{009ae0939de2e2902cbc6c9fa114de64}
+      \strng{authorfullhash}{81014322e3d945cf81cc44cea4ca8243}
       \field{sortinit}{4}
       \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
       \field{labelnamesource}{author}
@@ -226,40 +226,40 @@
       \field{title}{{TransUNet}: Transformers Make Strong Encoders for Medical Image Segmentation}
       \field{year}{2021}
     \endentry
-    \entry{wang2022uctransnet}{article}{}
+    \entry{wang2022uctransnet}{inproceedings}{}
       \name{author}{4}{}{%
-        {{hash=3ba30dd8f330c6e35c8cf88f12b318b9}{%
+        {{hash=39856f0439f35f79a8eed8b12d26166c}{%
            family={Wang},
            familyi={W\bibinitperiod},
-           given={Haonan},
+           given={H.},
            giveni={H\bibinitperiod}}}%
-        {{hash=0f0e8ca6c478e9456256256b1deae504}{%
+        {{hash=b1cd2ef4527776a057df2c17aa9ab8c3}{%
            family={Cao},
            familyi={C\bibinitperiod},
-           given={Peng},
+           given={P.},
            giveni={P\bibinitperiod}}}%
-        {{hash=3344bbcf94977a4549edb7feaf02c615}{%
+        {{hash=3702f1c146e64a6c91fc47b81ea59fc7}{%
            family={Wang},
            familyi={W\bibinitperiod},
-           given={Jiaqi},
+           given={J.},
            giveni={J\bibinitperiod}}}%
-        {{hash=582ca6ab886b323a15386f46026a71b9}{%
+        {{hash=f43e2ec3b5e537d094486e9b5c93add6}{%
            family={Zaiane},
            familyi={Z\bibinitperiod},
-           given={Osmar\bibnamedelima R},
+           given={O.\bibnamedelimi R.},
            giveni={O\bibinitperiod\bibinitdelim R\bibinitperiod}}}%
       }
-      \strng{namehash}{4d983305272c29f7c734a30dba3a20ff}
-      \strng{fullhash}{0dcc7de2bcb1df31142e58ae3bcb0371}
-      \strng{bibnamehash}{4d983305272c29f7c734a30dba3a20ff}
-      \strng{authorbibnamehash}{4d983305272c29f7c734a30dba3a20ff}
-      \strng{authornamehash}{4d983305272c29f7c734a30dba3a20ff}
-      \strng{authorfullhash}{0dcc7de2bcb1df31142e58ae3bcb0371}
+      \strng{namehash}{dccaa1dcfd3e42125e7248467021e0d9}
+      \strng{fullhash}{8e2328f2362d1218e76a2d2c8a6d45b6}
+      \strng{bibnamehash}{dccaa1dcfd3e42125e7248467021e0d9}
+      \strng{authorbibnamehash}{dccaa1dcfd3e42125e7248467021e0d9}
+      \strng{authornamehash}{dccaa1dcfd3e42125e7248467021e0d9}
+      \strng{authorfullhash}{8e2328f2362d1218e76a2d2c8a6d45b6}
       \field{sortinit}{5}
       \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{journaltitle}{AAAI Conference on Artificial Intelligence (AAAI)}
+      \field{booktitle}{AAAI Conf.\ Artificial Intelligence}
       \field{title}{{UCTransNet}: Rethinking the Skip Connections in {U-Net} from a Channel-wise Perspective with Transformer}
       \field{year}{2022}
     \endentry
@@ -316,110 +316,159 @@
       \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{booktitle}{IEEE/CVF International Conference on Computer Vision (ICCV)}
+      \field{booktitle}{IEEE/CVF Int.\ Conf.\ Computer Vision (ICCV)}
       \field{title}{Swin Transformer: Hierarchical Vision Transformer using Shifted Windows}
       \field{year}{2021}
       \field{pages}{10012\bibrangedash 10022}
       \range{pages}{11}
     \endentry
+    \entry{zhou2018unetpp}{inproceedings}{}
+      \name{author}{4}{}{%
+        {{hash=335463264b30d83d055bbbda6e0ac19b}{%
+           family={Zhou},
+           familyi={Z\bibinitperiod},
+           given={Zongwei},
+           giveni={Z\bibinitperiod}}}%
+        {{hash=b8c45427ea5d2a92d5d3034c2236a431}{%
+           family={Rahman\bibnamedelima Siddiquee},
+           familyi={R\bibinitperiod\bibinitdelim S\bibinitperiod},
+           given={Md\bibnamedelima Mahfuzur},
+           giveni={M\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+        {{hash=9c9511dbe0081a03151f75360a5829cc}{%
+           family={Tajbakhsh},
+           familyi={T\bibinitperiod},
+           given={Nima},
+           giveni={N\bibinitperiod}}}%
+        {{hash=561f0f41078c23c163560f0f8cdf8c23}{%
+           family={Liang},
+           familyi={L\bibinitperiod},
+           given={Jianming},
+           giveni={J\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{bd3b675e7546b4d476b417a296638ab8}
+      \strng{fullhash}{518c50ee472b8a7888bdec696eca5c2d}
+      \strng{bibnamehash}{bd3b675e7546b4d476b417a296638ab8}
+      \strng{authorbibnamehash}{bd3b675e7546b4d476b417a296638ab8}
+      \strng{authornamehash}{bd3b675e7546b4d476b417a296638ab8}
+      \strng{authorfullhash}{518c50ee472b8a7888bdec696eca5c2d}
+      \field{sortinit}{9}
+      \field{sortinithash}{0a5ebc79d83c96b6579069544c73c7d4}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Deep Learning in Medical Image Analysis and Multimodal Learning for Clinical Decision Support (DLMIA)}
+      \field{title}{{UNet++}: A Nested {U-Net} Architecture for Medical Image Segmentation}
+      \field{year}{2018}
+      \field{pages}{3\bibrangedash 11}
+      \range{pages}{9}
+    \endentry
+    \entry{tan2019efficientnet}{inproceedings}{}
+      \name{author}{2}{}{%
+        {{hash=1e7d6abb8225099acc71f672b9ec336e}{%
+           family={Tan},
+           familyi={T\bibinitperiod},
+           given={Mingxing},
+           giveni={M\bibinitperiod}}}%
+        {{hash=c636f146591d51579a8119b777394878}{%
+           family={Le},
+           familyi={L\bibinitperiod},
+           given={Quoc\bibnamedelima V.},
+           giveni={Q\bibinitperiod\bibinitdelim V\bibinitperiod}}}%
+      }
+      \strng{namehash}{d029e8131f7a0bef056d7edc726f1529}
+      \strng{fullhash}{d029e8131f7a0bef056d7edc726f1529}
+      \strng{bibnamehash}{d029e8131f7a0bef056d7edc726f1529}
+      \strng{authorbibnamehash}{d029e8131f7a0bef056d7edc726f1529}
+      \strng{authornamehash}{d029e8131f7a0bef056d7edc726f1529}
+      \strng{authorfullhash}{d029e8131f7a0bef056d7edc726f1529}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Int.\ Conf.\ Machine Learning (ICML)}
+      \field{title}{{EfficientNet}: Rethinking Model Scaling for Convolutional Neural Networks}
+      \field{year}{2019}
+    \endentry
     \entry{cardoso2022monai}{article}{}
       \true{moreauthor}
       \true{morelabelname}
-      \name{author}{10}{}{%
-        {{hash=da7555ed408fdfa8a4bf2b6aa96e7e75}{%
+      \name{author}{6}{}{%
+        {{hash=5ac20426723327d99adb9acf7f9f4249}{%
            family={Cardoso},
            familyi={C\bibinitperiod},
-           given={M.\bibnamedelimi Jorge},
+           given={M.\bibnamedelimi J.},
            giveni={M\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
-        {{hash=d32ec3dde5f923678d38244353a95911}{%
+        {{hash=6e5b0e6cca2615e3baa1c9fd08a1f208}{%
            family={Li},
            familyi={L\bibinitperiod},
-           given={Wenqi},
+           given={W.},
            giveni={W\bibinitperiod}}}%
-        {{hash=2e7c4d1d38f7906188ea79dadf997b1d}{%
+        {{hash=344a3ac6fefab29c623db9e5faa39878}{%
            family={Brown},
            familyi={B\bibinitperiod},
-           given={Richard},
+           given={R.},
            giveni={R\bibinitperiod}}}%
-        {{hash=ae7c2b784f76e15ce2eb6234f4c8d155}{%
+        {{hash=d54ac9d1c7d34f8464dd95c3dac4742b}{%
            family={Ma},
            familyi={M\bibinitperiod},
-           given={Nic},
+           given={N.},
            giveni={N\bibinitperiod}}}%
-        {{hash=05e21e25083844a6792428e8c193fee1}{%
+        {{hash=dc11a4a5536d395121392e39782160d1}{%
            family={Kerfoot},
            familyi={K\bibinitperiod},
-           given={Eric},
+           given={E.},
            giveni={E\bibinitperiod}}}%
-        {{hash=f4f38a9e771a6dbf5985f32cfe258976}{%
+        {{hash=61ad10c626e1d641e0b1d7b5f48d3233}{%
            family={Wang},
            familyi={W\bibinitperiod},
-           given={Yiheng},
+           given={Y.},
            giveni={Y\bibinitperiod}}}%
-        {{hash=c7903fe468c5fd845061800e1afb81f5}{%
-           family={Merveille},
-           familyi={M\bibinitperiod},
-           given={Benjamin},
-           giveni={B\bibinitperiod}}}%
-        {{hash=3037e6d1b4e05d17cc2eb6c1afb3ecb6}{%
-           family={Faulkner},
-           familyi={F\bibinitperiod},
-           given={Eric},
-           giveni={E\bibinitperiod}}}%
-        {{hash=6840aa86a8dc6834f433819e7476f62d}{%
-           family={Aderhold},
-           familyi={A\bibinitperiod},
-           given={Stephan},
-           giveni={S\bibinitperiod}}}%
-        {{hash=a19a5e715fda869516c9d9d4ffbfd7f7}{%
-           family={Shao},
-           familyi={S\bibinitperiod},
-           given={Ling},
-           giveni={L\bibinitperiod}}}%
       }
-      \strng{namehash}{772e945314805674bc2dba65ec45f7d3}
-      \strng{fullhash}{5e4f4ee1f6569bda5553b17888a7c5ca}
-      \strng{bibnamehash}{772e945314805674bc2dba65ec45f7d3}
-      \strng{authorbibnamehash}{772e945314805674bc2dba65ec45f7d3}
-      \strng{authornamehash}{772e945314805674bc2dba65ec45f7d3}
-      \strng{authorfullhash}{5e4f4ee1f6569bda5553b17888a7c5ca}
-      \field{sortinit}{9}
-      \field{sortinithash}{0a5ebc79d83c96b6579069544c73c7d4}
+      \strng{namehash}{0146bd1e7a0be200faff7bcf982e7648}
+      \strng{fullhash}{da525459cf60e9c4ad960c7441872a88}
+      \strng{bibnamehash}{0146bd1e7a0be200faff7bcf982e7648}
+      \strng{authorbibnamehash}{0146bd1e7a0be200faff7bcf982e7648}
+      \strng{authornamehash}{0146bd1e7a0be200faff7bcf982e7648}
+      \strng{authorfullhash}{da525459cf60e9c4ad960c7441872a88}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{arXiv preprint arXiv:2211.02701}
       \field{title}{{MONAI}: An open-source framework for deep learning in healthcare}
       \field{year}{2022}
     \endentry
-    \entry{milletari2016v}{article}{}
+    \entry{milletari2016v}{inproceedings}{}
       \name{author}{3}{}{%
-        {{hash=36352843cf5c29ea12d65f8a1b77f100}{%
+        {{hash=5036eecb5b52ca751c9897f64df6cce2}{%
            family={Milletari},
            familyi={M\bibinitperiod},
-           given={Fausto},
+           given={F.},
            giveni={F\bibinitperiod}}}%
-        {{hash=c107bbd317cd780c2aa7006dbe61d83f}{%
+        {{hash=31c769ca803b66b16a68494e9fee9aa0}{%
            family={Navab},
            familyi={N\bibinitperiod},
-           given={Nassir},
+           given={N.},
            giveni={N\bibinitperiod}}}%
-        {{hash=9968bdbe4d7541070894f7956ba4bcc0}{%
+        {{hash=ecbb9e679c4f522972ed87b633b65ff5}{%
            family={Ahmadi},
            familyi={A\bibinitperiod},
-           given={Seyed-Ahmad},
+           given={S.-A.},
            giveni={S\bibinithyphendelim A\bibinitperiod}}}%
       }
-      \strng{namehash}{a8692c505f8cc4c4daa5496d9430ba8c}
-      \strng{fullhash}{a8692c505f8cc4c4daa5496d9430ba8c}
-      \strng{bibnamehash}{a8692c505f8cc4c4daa5496d9430ba8c}
-      \strng{authorbibnamehash}{a8692c505f8cc4c4daa5496d9430ba8c}
-      \strng{authornamehash}{a8692c505f8cc4c4daa5496d9430ba8c}
-      \strng{authorfullhash}{a8692c505f8cc4c4daa5496d9430ba8c}
+      \strng{namehash}{42993dbf622891fcc16eb565f823b826}
+      \strng{fullhash}{42993dbf622891fcc16eb565f823b826}
+      \strng{bibnamehash}{42993dbf622891fcc16eb565f823b826}
+      \strng{authorbibnamehash}{42993dbf622891fcc16eb565f823b826}
+      \strng{authornamehash}{42993dbf622891fcc16eb565f823b826}
+      \strng{authorfullhash}{42993dbf622891fcc16eb565f823b826}
       \field{sortinit}{1}
       \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{booktitle}{International Conference on 3D Vision (3DV)}
+      \field{booktitle}{Int.\ Conf.\ 3D Vision (3DV)}
       \field{title}{{V-Net}: Fully Convolutional Neural Networks for Volumetric Medical Image Segmentation}
       \field{year}{2016}
       \field{pages}{565\bibrangedash 571}
@@ -463,7 +512,7 @@
       \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{booktitle}{IEEE International Conference on Computer Vision (ICCV)}
+      \field{booktitle}{IEEE Int.\ Conf.\ Computer Vision (ICCV)}
       \field{title}{Focal Loss for Dense Object Detection}
       \field{year}{2017}
       \field{pages}{2980\bibrangedash 2988}
@@ -471,23 +520,23 @@
     \endentry
     \entry{loshchilov2017decoupled}{article}{}
       \name{author}{2}{}{%
-        {{hash=1241b8181104f1917578d4c7f9b323b6}{%
+        {{hash=1eb0059921a887b8babd094b3c9a539b}{%
            family={Loshchilov},
            familyi={L\bibinitperiod},
-           given={Ilya},
+           given={I.},
            giveni={I\bibinitperiod}}}%
-        {{hash=528d4af87fd2ecf5fb8a22db913ce088}{%
+        {{hash=4db2b09973c88dfc6c987ed53d89c9e5}{%
            family={Hutter},
            familyi={H\bibinitperiod},
-           given={Frank},
+           given={F.},
            giveni={F\bibinitperiod}}}%
       }
-      \strng{namehash}{b308ccb07134a06ec3735828ac4f15e2}
-      \strng{fullhash}{b308ccb07134a06ec3735828ac4f15e2}
-      \strng{bibnamehash}{b308ccb07134a06ec3735828ac4f15e2}
-      \strng{authorbibnamehash}{b308ccb07134a06ec3735828ac4f15e2}
-      \strng{authornamehash}{b308ccb07134a06ec3735828ac4f15e2}
-      \strng{authorfullhash}{b308ccb07134a06ec3735828ac4f15e2}
+      \strng{namehash}{20d2c8eb31340eea32c822610092a0e9}
+      \strng{fullhash}{20d2c8eb31340eea32c822610092a0e9}
+      \strng{bibnamehash}{20d2c8eb31340eea32c822610092a0e9}
+      \strng{authorbibnamehash}{20d2c8eb31340eea32c822610092a0e9}
+      \strng{authornamehash}{20d2c8eb31340eea32c822610092a0e9}
+      \strng{authorfullhash}{20d2c8eb31340eea32c822610092a0e9}
       \field{sortinit}{1}
       \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
       \field{labelnamesource}{author}
