@@ -865,21 +865,24 @@ Dice Loss直接优化分割重叠度，对类别不平衡具有天然鲁棒性�
     \begin{groupplot}[
         group style={
             group size=1 by 3,
-            vertical sep=0.8cm,
+            vertical sep=2.0cm,
         },
-        width=0.88\textwidth,
+        width=0.82\textwidth,
+        height=4.2cm,
+        scale only axis,
         grid=major,
         grid style={dashed, gray!15},
         tick label style={font=\footnotesize},
         label style={font=\small},
+        title style={font=\small\bfseries},
     ]
     % --- Exp1 Loss ---
     \nextgroupplot[
-        height=4.0cm,
         ylabel={训练损失},
-        title={\small\bfseries (a) 基准实验（Run-I）},
+        title={(a) 基准实验（Run-I）},
         xmin=0, xmax=200,
         ymin=0.25, ymax=1.0,
+        xticklabels={},
     ]
     \addplot[cBlue, thick, mark=none, smooth] coordinates {
         (1,0.9239) (5,0.7518) (10,0.6848) (20,0.5611) (25,0.5551)
@@ -891,11 +894,11 @@ Dice Loss直接优化分割重叠度，对类别不平衡具有天然鲁棒性�
 
     % --- Exp2 Loss ---
     \nextgroupplot[
-        height=4.0cm,
         ylabel={训练损失},
-        title={\small\bfseries (b) 可复现性验证实验（Run-II）},
+        title={(b) 可复现性验证实验（Run-II）},
         xmin=0, xmax=200,
         ymin=0.25, ymax=1.0,
+        xticklabels={},
     ]
     \addplot[cRed, thick, mark=none, smooth] coordinates {
         (1,0.8599) (5,0.6461) (10,0.5993) (20,0.5791) (25,0.5101)
@@ -907,10 +910,9 @@ Dice Loss直接优化分割重叠度，对类别不平衡具有天然鲁棒性�
 
     % --- Exp3 Loss ---
     \nextgroupplot[
-        height=4.0cm,
         ylabel={训练损失},
         xlabel={训练轮次（Epoch）},
-        title={\small\bfseries (c) 对比实验（Run-III）},
+        title={(c) 对比实验（Run-III）},
         xmin=0, xmax=150,
         ymin=0, ymax=1.0,
     ]
@@ -943,27 +945,31 @@ Dice Loss直接优化分割重叠度，对类别不平衡具有天然鲁棒性�
     \begin{groupplot}[
         group style={
             group size=1 by 3,
-            vertical sep=0.8cm,
+            vertical sep=2.0cm,
         },
-        width=0.88\textwidth,
+        width=0.82\textwidth,
+        height=4.2cm,
+        scale only axis,
         grid=major,
         grid style={dashed, gray!15},
         tick label style={font=\footnotesize},
         label style={font=\small},
+        title style={font=\small\bfseries},
         ymin=0.45, ymax=1.0,
-        legend style={
-            at={(0.97,0.50)}, anchor=east,
-            font=\footnotesize, draw=gray!30,
-            fill=white, fill opacity=0.95,
-            rounded corners=1pt,
-        },
     ]
     % --- Exp1 Dice ---
     \nextgroupplot[
-        height=4.0cm,
         ylabel={Dice相似系数},
-        title={\small\bfseries (a) 基准实验（Run-I）},
+        title={(a) 基准实验（Run-I）},
         xmin=0, xmax=200,
+        xticklabels={},
+        legend style={
+            at={(0.98,0.45)}, anchor=east,
+            font=\scriptsize, draw=gray!30,
+            fill=white, fill opacity=0.9,
+            rounded corners=1pt,
+            row sep=1pt,
+        },
     ]
     \addplot[cBlue, thick, mark=none, smooth] coordinates {
         (10,0.8308) (20,0.8766) (50,0.8895) (100,0.9065)
@@ -983,44 +989,63 @@ Dice Loss直接优化分割重叠度，对类别不平衡具有天然鲁棒性�
 
     % --- Exp2 Dice ---
     \nextgroupplot[
-        height=4.0cm,
         ylabel={Dice相似系数},
-        title={\small\bfseries (b) 可复现性验证实验（Run-II）},
+        title={(b) 可复现性验证实验（Run-II）},
         xmin=0, xmax=200,
+        xticklabels={},
+        legend style={
+            at={(0.98,0.45)}, anchor=east,
+            font=\scriptsize, draw=gray!30,
+            fill=white, fill opacity=0.9,
+            rounded corners=1pt,
+            row sep=1pt,
+        },
     ]
     \addplot[cBlue, thick, mark=none, smooth] coordinates {
         (10,0.8148) (20,0.8512) (50,0.8313) (100,0.9113)
         (150,0.9621) (170,0.9650) (180,0.9652) (190,0.9660) (200,0.9664)
     };
+    \addlegendentry{肺}
     \addplot[cRed, thick, mark=none, smooth] coordinates {
         (10,0.6385) (20,0.8094) (50,0.7383) (100,0.8351)
         (150,0.8936) (170,0.8958) (180,0.9018) (190,0.9054) (200,0.8995)
     };
+    \addlegendentry{心脏}
     \addplot[cGreen, thick, mark=none, smooth] coordinates {
         (10,0.5224) (20,0.6139) (50,0.8629) (100,0.9225)
         (150,0.9412) (170,0.9449) (180,0.9451) (190,0.9458) (200,0.9455)
     };
+    \addlegendentry{气管}
 
     % --- Exp3 Dice ---
     \nextgroupplot[
-        height=4.0cm,
         ylabel={Dice相似系数},
         xlabel={训练轮次（Epoch）},
-        title={\small\bfseries (c) 对比实验（Run-III）},
+        title={(c) 对比实验（Run-III）},
         xmin=0, xmax=150,
+        legend style={
+            at={(0.98,0.45)}, anchor=east,
+            font=\scriptsize, draw=gray!30,
+            fill=white, fill opacity=0.9,
+            rounded corners=1pt,
+            row sep=1pt,
+        },
     ]
     \addplot[cBlue, thick, mark=none, smooth] coordinates {
         (10,0.8846) (20,0.9366) (50,0.9470) (60,0.9568)
         (100,0.9689) (120,0.9695) (140,0.9703) (150,0.9702)
     };
+    \addlegendentry{肺}
     \addplot[cRed, thick, mark=none, smooth] coordinates {
         (10,0.8765) (20,0.8694) (50,0.9173) (60,0.9617)
         (100,0.9701) (120,0.9703) (140,0.9712) (150,0.9718)
     };
+    \addlegendentry{心脏}
     \addplot[cGreen, thick, mark=none, smooth] coordinates {
         (10,0.7427) (20,0.8520) (50,0.9008) (60,0.9319)
         (100,0.9505) (120,0.9544) (140,0.9560) (150,0.9563)
     };
+    \addlegendentry{气管}
 
     \end{groupplot}
     \end{tikzpicture}
@@ -1043,28 +1068,35 @@ Dice Loss直接优化分割重叠度，对类别不平衡具有天然鲁棒性�
     \begin{tikzpicture}
     \begin{axis}[
         ybar,
-        width=0.9\textwidth,
-        height=5.8cm,
-        bar width=8pt,
+        width=0.85\textwidth,
+        height=6cm,
+        scale only axis,
+        bar width=10pt,
         xlabel={器官},
         ylabel={Dice相似系数（DSC）},
-        ymin=0.88, ymax=1.0,
+        ymin=0.86, ymax=1.0,
         symbolic x coords={肺, 心脏, 气管, mDSC},
         xtick=data,
         x tick label style={font=\small},
         tick label style={font=\footnotesize},
         label style={font=\small},
         legend style={
-            at={(0.02,0.98)}, anchor=north west,
+            at={(0.5,-0.20)}, anchor=north,
+            legend columns=3,
             font=\footnotesize, draw=gray!30,
             fill=white, fill opacity=0.95,
             rounded corners=1pt,
+            /tikz/every even column/.append style={column sep=12pt},
         },
         grid=major,
         grid style={dashed, gray!15},
-        enlarge x limits=0.2,
+        enlarge x limits=0.22,
         nodes near coords,
-        every node near coord/.append style={font=\tiny, rotate=90, anchor=west},
+        every node near coord/.append style={
+            font=\tiny,
+            anchor=south,
+            yshift=1pt,
+        },
     ]
     \addplot[fill=cBlue!65, draw=cBlue!90] coordinates {
         (肺,0.9632) (心脏,0.9132) (气管,0.9398) (mDSC,0.9388)
