@@ -28,20 +28,12 @@ build/
 *.log
 *.out
 *.toc
-*.vrb
-*.nav
-*.snm
-*.idx
-*.ilg
-*.ind
 *.bbl
 *.bcf
 *.blg
 *.run.xml
 *.fdb_latexmk
 *.fls
-*.synctex.gz
-*.xdv
 
 # ============================================================
 #  IDE / Editor
