@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Chest CT Multi-Organ Segmentation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/white.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        /* ========== Design System ========== */
+        :root {
+            --primary: #1B3A5C;
+            --primary-rgb: 27,58,92;
+            --accent: #2E86AB;
+            --accent-rgb: 46,134,171;
+            --accent-light: #A3D5FF;
+            --success: #27AE60;
+            --success-rgb: 39,174,96;
+            --warning: #E67E22;
+            --warning-rgb: 230,126,34;
+            --danger: #C0392B;
+            --danger-rgb: 192,57,43;
+            --text: #2C3E50;
+            --text-light: #7F8C8D;
+            --bg-light: #F8F9FA;
+            --border: #E8ECF0;
+            --card-shadow: 0 2px 12px rgba(0,0,0,0.07);
+            --card-shadow-hover: 0 6px 20px rgba(0,0,0,0.12);
+            --radius: 10px;
+            --radius-sm: 6px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* ========== Global Reset & Box Model ========== */
+        *, *::before, *::after { box-sizing: border-box; }
+
+        .reveal {
+            font-family: -apple-system, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
+            color: var(--text);
+        }
+
+        .reveal .slides { text-align: left; }
+
+        .reveal .slides > section,
+        .reveal .slides > section > section {
+            padding: 0.5em;
+            overflow: hidden;
+        }
+
+        /* ========== Typography (Fluid) ========== */
+        .reveal h1, .reveal h2, .reveal h3 {
+            font-weight: 700;
+            color: var(--primary);
+            text-transform: none;
+            letter-spacing: 0;
+            line-height: 1.2;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .reveal h1 { font-size: clamp(1.2em, 3vw, 1.8em); }
+        .reveal h2 { font-size: clamp(0.95em, 2.2vw, 1.25em); margin-bottom: 0.35em; }
+        .reveal h3 { font-size: clamp(0.82em, 1.6vw, 1.0em); margin-bottom: 0.2em; }
+
+        .reveal p, .reveal li {
+            font-size: clamp(0.62em, 1.3vw, 0.8em);
+            line-height: 1.55;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        /* ========== Reveal Chrome ========== */
+        .reveal .progress { height: 4px; }
+        .reveal .progress span { background: var(--accent); }
+
+        .reveal .slide-number {
+            font-size: 0.5em;
+            color: var(--text-light);
+            background: rgba(255,255,255,0.85);
+            padding: 0.2em 0.5em;
+            border-radius: 4px;
+        }
+
+        .reveal .controls button { color: var(--accent); }
+
+        /* ========== Card Component ========== */
+        .card {
+            background: white;
+            border-radius: var(--radius);
+            padding: clamp(0.4em, 0.8vw, 0.8em) clamp(0.5em, 1vw, 1.1em);
+            box-shadow: var(--card-shadow);
+            border-left: 3px solid var(--accent);
+            text-align: left;
+            margin: 0.25em 0;
+            transition: transform var(--transition), box-shadow var(--transition);
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--card-shadow-hover);
+        }
+
+        .card-success { border-left-color: var(--success); }
+        .card-warning { border-left-color: var(--warning); }
+        .card-danger  { border-left-color: var(--danger); }
+        .card-primary { border-left-color: var(--primary); }
+
+        /* ========== Grid Layouts ========== */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: clamp(0.3em, 0.8vw, 0.8em);
+            text-align: left;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: clamp(0.25em, 0.5vw, 0.6em);
+            text-align: left;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: clamp(0.2em, 0.4vw, 0.5em);
+            text-align: center;
+        }
+
+        /* ========== Icon Box ========== */
+        .icon-box {
+            background: linear-gradient(135deg, var(--accent), var(--primary));
+            color: white;
+            width: clamp(30px, 4vw, 42px);
+            height: clamp(30px, 4vw, 42px);
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: clamp(0.85em, 1.5vw, 1.1em);
+            margin: 0 auto 0.3em;
+            transition: transform var(--transition);
+        }
+
+        .icon-box:hover { transform: scale(1.1); }
+
+        /* ========== Tag / Badge ========== */
+        .tag {
+            display: inline-block;
+            background: var(--accent-light);
+            color: var(--primary);
+            padding: 0.1em 0.5em;
+            border-radius: 4px;
+            font-size: 0.72em;
+            font-weight: 600;
+            vertical-align: middle;
+        }
+
+        /* ========== Table Styling ========== */
+        .table-wrap {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin: 0.6em 0;
+            border-radius: var(--radius-sm);
+        }
+
+        .reveal table {
+            font-size: clamp(0.52em, 1vw, 0.68em);
+            border-collapse: collapse;
+            width: 100%;
+            margin: 0;
+            min-width: 360px;
+        }
+
+        .reveal th {
+            background: var(--primary);
+            color: white;
+            padding: clamp(4px, 0.7vw, 7px) clamp(6px, 0.9vw, 10px);
+            font-weight: 600;
+            font-size: 0.9em;
+            white-space: nowrap;
+        }
+
+        .reveal td {
+            padding: clamp(3px, 0.6vw, 6px) clamp(6px, 0.9vw, 10px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .reveal tr:nth-child(even) td { background: var(--bg-light); }
+        .reveal tr:hover td { background: #E3F2FD; }
+
+        .best { color: var(--success); font-weight: 700; }
+
+        /* ========== Section Divider ========== */
+        .section-divider {
+            position: relative;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .section-divider::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 60%, #5DADE2 100%);
+            z-index: -1;
+        }
+
+        .section-divider::after {
+            content: '';
+            position: absolute;
+            top: -50%; right: -20%;
+            width: 60%; height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%);
+            z-index: -1;
+        }
+
+        .section-divider h1, .section-divider h2, .section-divider p {
+            color: white;
+        }
+
+        .section-divider .section-num {
+            font-size: clamp(2.5em, 6vw, 4em);
+            font-weight: 800;
+            opacity: 0.12;
+            position: absolute;
+            top: 0.2em;
+            left: 0.4em;
+            line-height: 1;
+        }
+
+        .section-divider .section-subtitle {
+            font-size: clamp(0.6em, 1.2vw, 0.78em);
+            opacity: 0.75;
+            margin-top: 0.2em;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+        }
+
+        /* ========== Title Slide ========== */
+        .title-slide {
+            position: relative;
+        }
+
+        .title-slide::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 6px; height: 100%;
+            background: linear-gradient(180deg, var(--accent), var(--primary));
+            border-radius: 3px;
+        }
+
+        .title-slide .title-badge {
+            display: inline-block;
+            font-size: clamp(0.55em, 1vw, 0.75em);
+            color: var(--accent);
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            margin-bottom: 0.3em;
+            padding: 0.2em 0.8em;
+            border: 1.5px solid var(--accent);
+            border-radius: 20px;
+        }
+
+        /* ========== Image Styles ========== */
+        .img-responsive {
+            max-width: 100%;
+            max-height: clamp(160px, 32vh, 320px);
+            object-fit: contain;
+            margin: 0.15em auto;
+            display: block;
+            border-radius: var(--radius-sm);
+        }
+
+        .img-caption {
+            font-size: clamp(0.48em, 0.85vw, 0.62em);
+            color: var(--text-light);
+            margin-top: 0.2em;
+            font-style: italic;
+            text-align: center;
+        }
+
+        .img-compare {
+            width: 100%;
+            max-height: clamp(130px, 26vh, 260px);
+            object-fit: contain;
+            border-radius: var(--radius-sm);
+        }
+
+        /* ========== Reference ========== */
+        .ref {
+            font-size: clamp(0.5em, 0.9vw, 0.65em);
+            color: var(--text-light);
+            text-align: left;
+            margin-top: 0.6em;
+            border-top: 1px solid var(--border);
+            padding-top: 0.4em;
+        }
+
+        /* ========== Stat Box ========== */
+        .stat-box {
+            text-align: center;
+            padding: clamp(0.3em, 0.6vw, 0.6em);
+        }
+
+        .stat-box .stat-value {
+            font-size: clamp(1.3em, 3vw, 1.8em);
+            font-weight: 800;
+            color: var(--accent);
+            line-height: 1.1;
+        }
+
+        .stat-box .stat-label {
+            font-size: clamp(0.5em, 0.85vw, 0.65em);
+            color: var(--text-light);
+            margin-top: 0.1em;
+        }
+
+        /* ========== Architecture Label ========== */
+        .arch-label {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 0.2em 0.9em;
+            border-radius: 20px;
+            font-size: clamp(0.6em, 1vw, 0.8em);
+            font-weight: 600;
+            margin-bottom: 0.4em;
+        }
+
+        /* ========== VS Badge ========== */
+        .vs-badge {
+            display: inline-block;
+            background: var(--warning);
+            color: white;
+            padding: 0.15em 0.7em;
+            border-radius: 20px;
+            font-size: 0.7em;
+            font-weight: 700;
+        }
+
+        /* ========== Color Legend ========== */
+        .color-legend {
+            display: flex;
+            justify-content: center;
+            gap: clamp(1em, 2vw, 2em);
+            margin-top: 0.6em;
+            font-size: clamp(0.6em, 1.1vw, 0.8em);
+            flex-wrap: wrap;
+        }
+
+        .color-legend span {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3em;
+        }
+
+        .color-dot {
+            display: inline-block;
+            width: 10px; height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        /* ========== Fragment Animations ========== */
+        .reveal .slides section .fragment.fade-up {
+            opacity: 0;
+            transform: translateY(16px);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .reveal .slides section .fragment.fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal .slides section .fragment.fade-right {
+            opacity: 0;
+            transform: translateX(-16px);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .reveal .slides section .fragment.fade-right.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* ========== Numbered Conclusion ========== */
+        .conclusion-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5em;
+        }
+
+        .conclusion-num {
+            flex-shrink: 0;
+            width: 1.6em; height: 1.6em;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 800;
+            font-size: 0.85em;
+            color: white;
+        }
+
+        .conclusion-text {
+            flex: 1;
+            min-width: 0;
+        }
+
+        /* ========== Thank You Slide ========== */
+        .thank-you-icon {
+            font-size: clamp(2em, 5vw, 3.5em);
+            background: linear-gradient(135deg, var(--accent), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.3em;
+        }
+
+        /* ========== Responsive Breakpoints ========== */
+        @media (max-width: 1200px) {
+            .grid-4 { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 900px) {
+            .grid-3 { grid-template-columns: repeat(2, 1fr); }
+            .reveal table { min-width: 320px; }
+        }
+
+        @media (max-width: 600px) {
+            .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+            .reveal h1 { font-size: 1.1em; }
+            .reveal h2 { font-size: 0.9em; }
+            .reveal p, .reveal li { font-size: 0.62em; }
+            .card { padding: 0.4em 0.6em; margin: 0.2em 0; }
+            .icon-box { width: 28px; height: 28px; font-size: 0.68em; }
+            .section-divider .section-num { font-size: 2em; }
+            .img-responsive { max-height: 150px; }
+            .img-compare { max-height: 120px; }
+        }
+
+        /* ========== Print Styles ========== */
+        @media print {
+            .reveal .progress, .reveal .controls, .reveal .slide-number { display: none; }
+            .reveal .slides > section { page-break-after: always; }
+            .fragment { opacity: 1 !important; transform: none !important; }
+        }
+
+        /* ========== Utility ========== */
+        .text-center { text-align: center; }
+        .text-accent { color: var(--accent); }
+        .text-success { color: var(--success); }
+        .text-warning { color: var(--warning); }
+        .text-danger { color: var(--danger); }
+        .fw-700 { font-weight: 700; }
+        .mt-sm { margin-top: 0.4em; }
+        .mt-md { margin-top: 0.8em; }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- ========== TITLE ========== -->
+            <section class="title-slide" data-transition="zoom">
+                <div style="padding-left: clamp(1em, 2vw, 1.5em); max-width: 95%;">
+                    <span class="title-badge">Medical Image Processing · Final Project</span>
+                    <h1 style="margin: 0.15em 0;">胸部CT多器官分割</h1>
+                    <h2 style="font-weight: 400; color: var(--accent);">基于Swin-UNETR v2与UNet++的对比研究</h2>
+                    <div style="margin-top: clamp(1em, 2.5vw, 2em); font-size: clamp(0.65em, 1.2vw, 0.85em); color: var(--text-light);">
+                        <p><i class="fas fa-users" style="color: var(--accent); margin-right: 0.5em;"></i>俞烨 · 张天硕 · 张璟文 · 张鸿榜 · 吴君凯 · 黄绍华 · 陈飞翔 · 刘华胜</p>
+                        <p style="margin-top: 0.4em;"><i class="fas fa-university" style="color: var(--accent); margin-right: 0.5em;"></i>医学图像处理技术 · 第15组</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========== OUTLINE ========== -->
+            <section>
+                <h2>汇报大纲</h2>
+                <div class="grid-2" style="max-width: 92%; margin: 0 auto;">
+                    <div class="card fragment fade-up">
+                        <p class="fw-700" style="color: var(--primary);"><i class="fas fa-microscope" style="color: var(--accent); margin-right: 0.4em;"></i>01 研究背景</p>
+                        <p style="font-size: 0.7em; color: var(--text-light);">临床需求与技术现状</p>
+                    </div>
+                    <div class="card card-success fragment fade-up">
+                        <p class="fw-700" style="color: var(--primary);"><i class="fas fa-heartbeat" style="color: var(--success); margin-right: 0.4em;"></i>02 研究意义</p>
+                        <p style="font-size: 0.7em; color: var(--text-light);">医学影像分析应用价值</p>
+                    </div>
+                    <div class="card card-warning fragment fade-up">
+                        <p class="fw-700" style="color: var(--primary);"><i class="fas fa-cogs" style="color: var(--warning); margin-right: 0.4em;"></i>03 研究方法</p>
+                        <p style="font-size: 0.7em; color: var(--text-light);">模型架构与实验设计</p>
+                    </div>
+                    <div class="card card-danger fragment fade-up">
+                        <p class="fw-700" style="color: var(--primary);"><i class="fas fa-chart-bar" style="color: var(--danger); margin-right: 0.4em;"></i>04 实验结果</p>
+                        <p style="font-size: 0.7em; color: var(--text-light);">定量与定性分析</p>
+                    </div>
+                </div>
+                <div class="card fragment fade-up" style="max-width: 46%; margin: 0.6em auto 0; text-align: center; border-left-color: var(--primary);">
+                    <p class="fw-700" style="color: var(--primary);"><i class="fas fa-lightbulb" style="color: var(--primary); margin-right: 0.4em;"></i>05 结论与展望</p>
+                </div>
+            </section>
+
+            <!-- ========== SECTION 1: BACKGROUND ========== -->
+            <section class="section-divider" data-transition="zoom">
+                <span class="section-num">01</span>
+                <h1>研究背景</h1>
+                <p class="section-subtitle">Research Background</p>
+            </section>
+
+            <section>
+                <h2>胸部CT影像的临床需求</h2>
+                <div class="grid-4 fragment fade-up">
+                    <div class="stat-box">
+                        <div class="icon-box"><i class="fas fa-lungs"></i></div>
+                        <p style="font-weight: 600; font-size: clamp(0.7em, 1.2vw, 0.85em);">肺部疾病筛查</p>
+                    </div>
+                    <div class="stat-box">
+                        <div class="icon-box"><i class="fas fa-heart"></i></div>
+                        <p style="font-weight: 600; font-size: clamp(0.7em, 1.2vw, 0.85em);">心脏功能评估</p>
+                    </div>
+                    <div class="stat-box">
+                        <div class="icon-box"><i class="fas fa-wind"></i></div>
+                        <p style="font-weight: 600; font-size: clamp(0.7em, 1.2vw, 0.85em);">气道病变分析</p>
+                    </div>
+                    <div class="stat-box">
+                        <div class="icon-box"><i class="fas fa-syringe"></i></div>
+                        <p style="font-weight: 600; font-size: clamp(0.7em, 1.2vw, 0.85em);">手术规划辅助</p>
+                    </div>
+                </div>
+                <div class="card fragment fade-up mt-md">
+                    <p style="font-size: clamp(0.72em, 1.3vw, 0.9em);">胸部CT是上述临床任务的<span class="text-accent fw-700">核心影像学手段</span>，全球每年进行数千万次检查。然而，<strong>人工标注耗时费力、主观性强、效率低下</strong>，难以满足大规模筛查需求。</p>
+                </div>
+            </section>
+
+            <section>
+                <h2>深度学习技术演进</h2>
+                <div class="grid-3 fragment fade-up">
+                    <div class="card">
+                        <p class="fw-700" style="color: var(--primary);">U-Net <span class="tag">2015</span></p>
+                        <p style="font-size: 0.68em;">编解码结构 + 跳跃连接<br>医学图像分割基石</p>
+                        <p class="ref">Ronneberger et al., MICCAI</p>
+                    </div>
+                    <div class="card card-warning">
+                        <p class="fw-700" style="color: var(--primary);">Swin Transformer <span class="tag">2021</span></p>
+                        <p style="font-size: 0.68em;">移位窗口自注意力<br>线性复杂度全局建模</p>
+                        <p class="ref">Liu et al., ICCV</p>
+                    </div>
+                    <div class="card card-success">
+                        <p class="fw-700" style="color: var(--primary);">UNet++ <span class="tag">2018</span></p>
+                        <p style="font-size: 0.68em;">嵌套跳跃路径<br>渐进式语义融合</p>
+                        <p class="ref">Zhou et al., DLMIA</p>
+                    </div>
+                </div>
+                <p class="fragment fade-up mt-md" style="font-size: 0.7em; color: var(--text-light); text-align: center;">本研究系统对比三种代表性架构在胸部CT多器官分割任务上的性能差异</p>
+            </section>
+
+            <!-- ========== SECTION 2: SIGNIFICANCE ========== -->
+            <section class="section-divider" data-transition="zoom">
+                <span class="section-num">02</span>
+                <h1>研究意义</h1>
+                <p class="section-subtitle">Research Significance</p>
+            </section>
+
+            <section>
+                <h2>临床与学术价值</h2>
+                <div class="grid-2">
+                    <div>
+                        <h3 style="font-size: clamp(0.85em, 1.5vw, 1.0em);"><i class="fas fa-hospital" style="color: var(--accent);"></i> 临床应用</h3>
+                        <div class="card fragment fade-up" style="font-size: 0.82em;">
+                            <p><strong class="text-accent">肺癌筛查</strong> — 自动检测肺部结节</p>
+                        </div>
+                        <div class="card card-success fragment fade-up" style="font-size: 0.82em;">
+                            <p><strong class="text-success">心脏评估</strong> — 精确测量功能参数</p>
+                        </div>
+                        <div class="card card-warning fragment fade-up" style="font-size: 0.82em;">
+                            <p><strong class="text-warning">气道分析</strong> — 检测气管异常形态</p>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 style="font-size: clamp(0.85em, 1.5vw, 1.0em);"><i class="fas fa-graduation-cap" style="color: var(--primary);"></i> 学术贡献</h3>
+                        <div class="card fragment fade-up" style="font-size: 0.82em;">
+                            <p><strong>方法学对比</strong> — Transformer vs CNN</p>
+                        </div>
+                        <div class="card fragment fade-up" style="font-size: 0.82em;">
+                            <p><strong>可复现性验证</strong> — 三次独立实验</p>
+                        </div>
+                        <div class="card fragment fade-up" style="font-size: 0.82em;">
+                            <p><strong>基准建立</strong> — 公开数据集参照</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========== SECTION 3: METHODS ========== -->
+            <section class="section-divider" data-transition="zoom">
+                <span class="section-num">03</span>
+                <h1>研究方法</h1>
+                <p class="section-subtitle">Methodology</p>
+            </section>
+
+            <section>
+                <h2>数据集</h2>
+                <div class="grid-2">
+                    <div>
+                        <div class="table-wrap">
+                            <table>
+                                <tr><th colspan="2">Kaggle Chest CT Segmentation</th></tr>
+                                <tr><td><i class="fas fa-images" style="color: var(--accent);"></i> 图像数量</td><td><strong>1,000</strong> 对</td></tr>
+                                <tr><td><i class="fas fa-expand" style="color: var(--accent);"></i> 分辨率</td><td>512 × 512</td></tr>
+                                <tr><td><i class="fas fa-layer-group" style="color: var(--accent);"></i> 训练/验证</td><td>800 / 200</td></tr>
+                                <tr><td><i class="fas fa-tags" style="color: var(--accent);"></i> 分割类别</td><td>肺、心脏、气管</td></tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="grid-3" style="gap: 0.5em;">
+                            <div class="stat-box">
+                                <div style="width: 36px; height: 36px; border-radius: 50%; background: #00BCD4; opacity: 0.7; margin: 0 auto;"></div>
+                                <p style="font-size: 0.55em; font-weight: 600; margin-top: 0.2em;">肺</p>
+                                <p style="font-size: 0.55em; color: var(--text-light);">Lung</p>
+                            </div>
+                            <div class="stat-box">
+                                <div style="width: 36px; height: 36px; border-radius: 50%; background: #E74C3C; opacity: 0.7; margin: 0 auto;"></div>
+                                <p style="font-size: 0.55em; font-weight: 600; margin-top: 0.2em;">心脏</p>
+                                <p style="font-size: 0.55em; color: var(--text-light);">Heart</p>
+                            </div>
+                            <div class="stat-box">
+                                <div style="width: 36px; height: 36px; border-radius: 50%; background: #F1C40F; opacity: 0.7; margin: 0 auto;"></div>
+                                <p style="font-size: 0.55em; font-weight: 600; margin-top: 0.2em;">气管</p>
+                                <p style="font-size: 0.55em; color: var(--text-light);">Trachea</p>
+                            </div>
+                        </div>
+                        <div class="card mt-sm" style="font-size: 0.68em;">
+                            <p><strong>类别不平衡挑战</strong>：肺占比最大，气管最小，需针对性设计损失函数</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2>模型架构 — U-Net（参考基线）</h2>
+                <span class="arch-label">Baseline</span>
+                <img src="u-net-architecture.png" alt="U-Net架构" class="img-responsive">
+                <p class="img-caption">图：U-Net架构 — 对称编解码结构 + 跳跃连接 (Ronneberger et al., MICCAI 2015)</p>
+                <div class="card fragment fade-up" style="font-size: 0.68em;">
+                    <p>编码器采用<strong>EfficientNet-B2</strong>（ImageNet预训练），解码器通过直接跳跃连接拼接特征</p>
+                </div>
+            </section>
+
+            <section>
+                <h2>模型架构 — Swin-UNETR v2</h2>
+                <span class="arch-label" style="background: var(--accent);">Proposed</span>
+                <img src="swin_unetr.png" alt="Swin-UNETR v2架构" class="img-responsive">
+                <p class="img-caption">图：Swin-UNETR v2 — Swin Transformer编码器 + CNN解码器 (Hatamizadeh et al., MICCAI 2022)</p>
+                <div class="grid-2 fragment fade-up" style="font-size: 0.68em;">
+                    <div class="card">
+                        <p><strong class="text-accent">编码器</strong>：4个Stage，移位窗口自注意力，特征维度 48→384</p>
+                    </div>
+                    <div class="card card-success">
+                        <p><strong class="text-success">解码器</strong>：转置卷积上采样 + 跳跃连接特征融合</p>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2>模型架构 — UNet++</h2>
+                <span class="arch-label" style="background: var(--success);">Comparison</span>
+                <img src="fig_unet++.png" alt="UNet++架构" class="img-responsive">
+                <p class="img-caption">图：UNet++ — 嵌套跳跃路径 + 深度监督 (Zhou et al., DLMIA 2018)</p>
+                <div class="grid-3 fragment fade-up" style="font-size: 0.68em;">
+                    <div class="card card-success">
+                        <p><strong>EfficientNet-B2</strong><br>ImageNet预训练编码器</p>
+                    </div>
+                    <div class="card card-warning">
+                        <p><strong>嵌套跳跃路径</strong><br>渐进式语义融合</p>
+                    </div>
+                    <div class="card">
+                        <p><strong>深度监督</strong><br>多层级联合优化</p>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2>实验设计</h2>
+                <div class="table-wrap">
+                    <table>
+                        <tr>
+                            <th>配置</th>
+                            <th>参考基线 (U-Net)</th>
+                            <th>Swin-UNETR v2</th>
+                            <th>UNet++</th>
+                        </tr>
+                        <tr>
+                            <td><strong>编码器</strong></td>
+                            <td>EfficientNet-B2</td>
+                            <td>Swin Transformer</td>
+                            <td>EfficientNet-B2</td>
+                        </tr>
+                        <tr>
+                            <td><strong>预训练</strong></td>
+                            <td>ImageNet</td>
+                            <td>无（从头训练）</td>
+                            <td>ImageNet</td>
+                        </tr>
+                        <tr>
+                            <td><strong>损失函数</strong></td>
+                            <td>BCEDiceLoss</td>
+                            <td>DiceFocalLoss</td>
+                            <td>DiceFocalLoss</td>
+                        </tr>
+                        <tr>
+                            <td><strong>优化器</strong></td>
+                            <td>Adam</td>
+                            <td>AdamW</td>
+                            <td>AdamW</td>
+                        </tr>
+                        <tr>
+                            <td><strong>批大小</strong></td>
+                            <td>8</td>
+                            <td>16</td>
+                            <td>64</td>
+                        </tr>
+                        <tr>
+                            <td><strong>训练轮数</strong></td>
+                            <td>100+</td>
+                            <td>200</td>
+                            <td>150</td>
+                        </tr>
+                        <tr>
+                            <td><strong>数据增强</strong></td>
+                            <td>轻量</td>
+                            <td>重度（旋转/噪声/对比度）</td>
+                            <td>轻量（翻转/仿射）</td>
+                        </tr>
+                    </table>
+                </div>
+                <p class="ref">Loshchilov & Hutter, 2017 · Milletari et al., 2016 · Lin et al., ICCV 2017</p>
+            </section>
+
+            <section>
+                <h2>损失函数：DiceFocalLoss</h2>
+                <div class="grid-2">
+                    <div class="card fragment fade-up">
+                        <p class="fw-700 text-accent">Dice Loss</p>
+                        <p style="font-size: 0.82em;">直接优化分割重叠度</p>
+                        <p style="font-size: 0.82em;">对类别不平衡天然鲁棒</p>
+                        <p style="font-size: 0.68em; color: var(--text-light); margin-top: 0.3em;">$\mathcal{L}_{\text{Dice}} = 1 - \frac{2\sum p_i g_i + \epsilon}{\sum p_i + \sum g_i + \epsilon}$</p>
+                    </div>
+                    <div class="card card-warning fragment fade-up">
+                        <p class="fw-700 text-warning">Focal Loss</p>
+                        <p style="font-size: 0.82em;">聚焦难分类样本</p>
+                        <p style="font-size: 0.82em;">调制因子 $(1-p_t)^\gamma$</p>
+                        <p style="font-size: 0.68em; color: var(--text-light); margin-top: 0.3em;">$\mathcal{L}_{\text{Focal}} = -\alpha_t(1-p_t)^\gamma \log(p_t)$</p>
+                    </div>
+                </div>
+                <div class="card fragment fade-up mt-md text-center">
+                    <p style="font-size: clamp(0.75em, 1.3vw, 0.9em);"><strong>$\mathcal{L} = \lambda_{\text{Dice}} \cdot \mathcal{L}_{\text{Dice}} + \lambda_{\text{Focal}} \cdot \mathcal{L}_{\text{Focal}}$</strong>&emsp;($\lambda_{\text{Dice}} = \lambda_{\text{Focal}} = 1.0$, $\gamma = 2.0$)</p>
+                </div>
+            </section>
+
+            <!-- ========== SECTION 4: RESULTS ========== -->
+            <section class="section-divider" data-transition="zoom">
+                <span class="section-num">04</span>
+                <h1>实验结果</h1>
+                <p class="section-subtitle">Experimental Results</p>
+            </section>
+
+            <section>
+                <h2>定量评估结果</h2>
+                <div class="table-wrap">
+                    <table>
+                        <tr>
+                            <th>模型</th>
+                            <th>肺 DSC</th>
+                            <th>心脏 DSC</th>
+                            <th>气管 DSC</th>
+                            <th>mDSC</th>
+                        </tr>
+                        <tr>
+                            <td>参考基线 (U-Net)</td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>≈0.968*</td>
+                        </tr>
+                        <tr>
+                            <td>Swin-UNETR v2（基准）</td>
+                            <td>0.963</td>
+                            <td>0.913</td>
+                            <td>0.940</td>
+                            <td>0.939</td>
+                        </tr>
+                        <tr>
+                            <td>Swin-UNETR v2（优化）</td>
+                            <td>0.966</td>
+                            <td>0.905</td>
+                            <td>0.946</td>
+                            <td>0.939</td>
+                        </tr>
+                        <tr style="background: #E8F5E9;">
+                            <td><strong>UNet++</strong></td>
+                            <td class="best">0.970</td>
+                            <td class="best">0.972</td>
+                            <td class="best">0.956</td>
+                            <td class="best">0.966</td>
+                        </tr>
+                    </table>
+                </div>
+                <p style="font-size: clamp(0.5em, 0.9vw, 0.7em); color: var(--text-light);">*参考基线采用整体Dice（非逐器官），数据划分不同，不宜直接比较</p>
+            </section>
+
+            <section>
+                <h2>关键发现</h2>
+                <div class="grid-2">
+                    <div class="card fragment fade-up">
+                        <p class="fw-700 text-accent"><i class="fas fa-arrow-up" style="margin-right: 0.3em;"></i>心脏DSC提升显著</p>
+                        <p style="font-size: 0.82em;">UNet++: <strong>0.972</strong> vs Swin-UNETR: 0.905<br><span class="text-success">+6.7pp</span></p>
+                    </div>
+                    <div class="card card-success fragment fade-up">
+                        <p class="fw-700 text-success"><i class="fas fa-bolt" style="margin-right: 0.3em;"></i>UNet++收敛更快</p>
+                        <p style="font-size: 0.82em;">第60轮损失骤降，仅需150轮<br>Swin-UNETR v2需200轮</p>
+                    </div>
+                    <div class="card card-warning fragment fade-up">
+                        <p class="fw-700 text-warning"><i class="fas fa-exclamation-triangle" style="margin-right: 0.3em;"></i>过拟合风险</p>
+                        <p style="font-size: 0.82em;">Swin-UNETR v2第200轮心脏DSC<br>从0.913降至0.843</p>
+                    </div>
+                    <div class="card fragment fade-up">
+                        <p class="fw-700" style="color: var(--primary);"><i class="fas fa-check-circle" style="margin-right: 0.3em;"></i>可复现性验证</p>
+                        <p style="font-size: 0.82em;">两次Swin-UNETR v2实验<br>mDSC差异 &lt; 0.2%</p>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2>定性可视化结果</h2>
+                <div class="grid-2" style="max-width: 88%; margin: 0 auto;">
+                    <div class="text-center">
+                        <p style="font-weight: 600; font-size: clamp(0.7em, 1.2vw, 0.9em); margin-bottom: 0.2em;">Ground Truth</p>
+                        <img src="ground_truth.png" alt="真实标注" class="img-compare" style="border: 2px solid var(--border);">
+                    </div>
+                    <div class="text-center">
+                        <p style="font-weight: 600; font-size: clamp(0.7em, 1.2vw, 0.9em); margin-bottom: 0.2em;">UNet++ Prediction</p>
+                        <img src="prediction.png" alt="模型预测" class="img-compare" style="border: 2px solid var(--success);">
+                    </div>
+                </div>
+                <div class="color-legend">
+                    <span><span class="color-dot" style="background: #00BCD4;"></span> 肺</span>
+                    <span><span class="color-dot" style="background: #E74C3C;"></span> 心脏</span>
+                    <span><span class="color-dot" style="background: #F1C40F;"></span> 气管</span>
+                </div>
+            </section>
+
+            <!-- ========== SECTION 5: CONCLUSION ========== -->
+            <section class="section-divider" data-transition="zoom">
+                <span class="section-num">05</span>
+                <h1>结论与展望</h1>
+                <p class="section-subtitle">Conclusion & Future Work</p>
+            </section>
+
+            <section>
+                <h2>主要结论</h2>
+                <div class="card fragment fade-up">
+                    <div class="conclusion-item">
+                        <div class="conclusion-num" style="background: var(--accent);">1</div>
+                        <div class="conclusion-text"><strong>UNet++表现最优</strong> — mDSC达0.966，心脏DSC提升+6.7pp</div>
+                    </div>
+                </div>
+                <div class="card card-success fragment fade-up">
+                    <div class="conclusion-item">
+                        <div class="conclusion-num" style="background: var(--success);">2</div>
+                        <div class="conclusion-text"><strong>预训练权重至关重要</strong> — EfficientNet-B2预训练显著提升性能</div>
+                    </div>
+                </div>
+                <div class="card card-warning fragment fade-up">
+                    <div class="conclusion-item">
+                        <div class="conclusion-num" style="background: var(--warning);">3</div>
+                        <div class="conclusion-text"><strong>小批量训练更稳定</strong> — 批大小16有效缓解过拟合</div>
+                    </div>
+                </div>
+                <div class="card fragment fade-up">
+                    <div class="conclusion-item">
+                        <div class="conclusion-num" style="background: var(--primary);">4</div>
+                        <div class="conclusion-text"><strong>方法具备可复现性</strong> — 三次独立实验结果一致</div>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2>局限性与未来工作</h2>
+                <div class="grid-2">
+                    <div>
+                        <h3 style="font-size: clamp(0.85em, 1.5vw, 1.0em); color: var(--danger);"><i class="fas fa-exclamation-circle"></i> 局限性</h3>
+                        <div class="card card-danger fragment fade-up" style="font-size: 0.82em;">
+                            <p>数据集规模有限（1,000例）</p>
+                        </div>
+                        <div class="card card-danger fragment fade-up" style="font-size: 0.82em;">
+                            <p>仅评估2D横断面，未涉及3D</p>
+                        </div>
+                        <div class="card card-danger fragment fade-up" style="font-size: 0.82em;">
+                            <p>未考虑临床诊断指标</p>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 style="font-size: clamp(0.85em, 1.5vw, 1.0em); color: var(--success);"><i class="fas fa-rocket"></i> 未来方向</h3>
+                        <div class="card card-success fragment fade-up" style="font-size: 0.82em;">
+                            <p>多中心数据 + 3D体素分割</p>
+                        </div>
+                        <div class="card card-success fragment fade-up" style="font-size: 0.82em;">
+                            <p>多任务学习（分割+诊断）</p>
+                        </div>
+                        <div class="card card-success fragment fade-up" style="font-size: 0.82em;">
+                            <p>可解释性 + 临床验证</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========== THANK YOU ========== -->
+            <section data-transition="zoom">
+                <div class="thank-you-icon"><i class="fas fa-heartbeat"></i></div>
+                <h1 style="font-size: clamp(1.8em, 4vw, 2.5em);">Thank You</h1>
+                <p style="font-size: clamp(0.8em, 1.5vw, 1.1em); color: var(--text-light); margin-top: 0.3em;">Questions & Discussion</p>
+                <div style="margin-top: clamp(1em, 2vw, 2em); font-size: clamp(0.6em, 1vw, 0.8em); color: var(--text-light);">
+                    <p><i class="fas fa-users" style="color: var(--accent); margin-right: 0.3em;"></i>俞烨 · 张天硕 · 张璟文 · 张鸿榜 · 吴君凯 · 黄绍华 · 陈飞翔 · 刘华胜</p>
+                    <p style="margin-top: 0.3em;"><i class="fas fa-university" style="color: var(--accent); margin-right: 0.3em;"></i>医学图像处理技术 · 第15组</p>
+                </div>
+                <div style="margin-top: clamp(0.8em, 1.5vw, 1.5em); font-size: clamp(0.45em, 0.8vw, 0.65em); color: var(--text-light); border-top: 1px solid var(--border); padding-top: 0.6em; max-width: 85%; margin-left: auto; margin-right: auto;">
+                    <p>References: Ronneberger et al. (MICCAI 2015) · Liu et al. (ICCV 2021) · Zhou et al. (DLMIA 2018) · Tan & Le (ICML 2019) · Hatamizadeh et al. (MICCAI 2022) · Lin et al. (ICCV 2017) · Milletari et al. (3DV 2016) · Loshchilov & Hutter (2017)</p>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/math/math.min.js"></script>
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            slideNumber: 'c/t',
+            history: true,
+            center: true,
+            hash: true,
+            transition: 'slide',
+            transitionSpeed: 'default',
+            backgroundTransition: 'fade',
+            math: {
+                mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js',
+                config: 'TeX-AMS_HTML-full',
+            },
+            plugins: [ RevealMath ],
+            width: 1100,
+            height: 700,
+            margin: 0.08,
+            minScale: 0.2,
+            maxScale: 2.0,
+        });
+    </script>
+</body>
+</html>

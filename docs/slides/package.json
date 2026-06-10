@@ -1,0 +1,21 @@
+{
+  "name": "chest-ct-segmentation-slides",
+  "version": "1.0.0",
+  "description": "胸部CT多器官分割研究汇报演示文稿",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "serve": "node server.js"
+  },
+  "keywords": [
+    "medical-imaging",
+    "ct-segmentation",
+    "deep-learning",
+    "presentation"
+  ],
+  "author": "Yu Ye et al.",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
